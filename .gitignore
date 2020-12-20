@@ -1,0 +1,6 @@
+dist
+.editorconfig
+node_modules
+*/static/*
+*.pyc
+.DS_Store

@@ -1,0 +1,11 @@
+version: "3"
+services:
+  dash:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      FLASK_ENV: production
+    labels: 
+      - traefik.http.routers.my-container.rule=PathPrefix(`/showme`)
+      - traefik.http.services.my-service.loadbalancer.server.port=8080
