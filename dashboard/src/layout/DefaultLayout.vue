@@ -6,7 +6,7 @@
       :background-color="sidebarBackground"
       :short-title="$t('sidebar.shortTitle')"
       :title="$t('sidebar.title')"
-      :logo="'./img/logo.jpg'"
+      :logo="assetPath + '/img/logo.jpg'"
     >
       <template slot-scope="props" slot="links">
         <sidebar-item

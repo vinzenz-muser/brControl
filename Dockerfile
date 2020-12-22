@@ -1,15 +1,22 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /dashboard
-COPY package*.json ./
+COPY dashboard/package*.json ./
 RUN npm install
-COPY . .
+COPY /dashboard/. .
 RUN npm run build
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM python:3-slim
 
-RUN rm /usr/share/nginx/html/*
-RUN mkdir /usr/share/nginx/html/dash
-COPY --from=build-stage /app/dist /usr/share/nginx/html/dash
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /
+COPY config.py .
+
+WORKDIR /admin
+COPY admin/. .
+COPY --from=build-stage /dashboard/dist /admin/static/dash
+
+WORKDIR /
+CMD ["waitress-serve", "admin:app"]

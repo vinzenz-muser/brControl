@@ -20,17 +20,16 @@
       <a class="navbar-brand">{{ routeName }}</a>
     </div>
 
-    <ul class="navbar-nav" :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'">
+    <ul class="navbar-nav ml-auto">
       <base-dropdown
         tag="li"
-        :menu-on-right="!$rtl.isRTL"
         title-tag="a"
         class="nav-item"
         title-classes="nav-link"
         menu-classes="dropdown-navbar"
       >
         <template slot="title">
-          <div class="photo"><img src="img/logo.jpg" /></div>
+          <div class="photo"><img v-bind:src="assetPath + '/img/logo.jpg'" /></div>
           <b class="caret d-none d-lg-block d-xl-block"></b>
           <p class="d-lg-none">Log out</p>
         </template>
@@ -68,9 +67,6 @@ export default {
     routeName() {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
-    },
-    isRTL() {
-      return this.$rtl.isRTL;
     }
   },
   data() {

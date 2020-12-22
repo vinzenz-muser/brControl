@@ -1,0 +1,4 @@
+flask
+waitress
+flask-sqlalchemy
+flask-migrate

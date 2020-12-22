@@ -1,29 +1,14 @@
 import os
 
 from flask import Flask
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
-def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite')
-    )
+app = Flask(__name__, instance_relative_config=True)
 
-    if test_config is None:
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        app.config.from_mapping(test_config)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    @app.route('/hello')
-    def hello():
-        return 'hello world'
-
-    @app.route('/dashboard')
-    def static_dash():
-        return app.send_static_file("dash/index.html")
-    return app
+from admin import routes, models

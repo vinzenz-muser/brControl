@@ -1,4 +1,4 @@
-<template>
+/<template>
   <div>
     <div class="row">
       <div class="col-lg-6" v-for="(device, deviceIndex) in activeDevices" :key="deviceIndex">

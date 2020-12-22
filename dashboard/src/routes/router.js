@@ -10,6 +10,8 @@ import DevicesDetail from '../pages/DevicesDetail.vue'
 
 Vue.use(Router);
 
+Vue.prototype.assetPath = '/static/dash';
+
 let authPages = {
 
 };

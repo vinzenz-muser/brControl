@@ -5,7 +5,7 @@
         <form @submit.prevent="handleSubmit(submit)">
           <card class="card-login card-white">
             <template slot="header">
-              <img src="img/card-primary.png" alt="" />
+              <img v-bind:src="assetPath+'/img/card-primary.png'" alt="" />
               <h1 class="card-title">Log in</h1>
             </template>
 
@@ -59,10 +59,10 @@
 import { extend } from "vee-validate";
 import { required, email, min } from "vee-validate/dist/rules";
 import sha256 from "js-sha256";
+import Vue from "vue"
 
 extend("email", email);
 extend("min", min);
-
 extend("required", required);
 
 export default {
