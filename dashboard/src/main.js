@@ -33,10 +33,10 @@ Vue.use(RouterPrefetch);
 var url = window.location.href
 var arr = url.split(":");
 var domain = arr[1].split("/")[2];
-console.log('http://'+domain+':42160/dashboard')
+console.log('https://'+domain+':42160/dashboard')
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'http://'+domain+':42160/dashboard',
+  connection: 'https://'+domain+':42160/dashboard',
   vuex: {
     store,
     actionPrefix: "SOCKET_",
