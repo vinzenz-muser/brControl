@@ -19,6 +19,7 @@ import RouterPrefetch from 'vue-router-prefetch'
 import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 import VueSocketIO from 'vue-socket.io'
+import io from 'socket.io-client';
 import store from "./store";
 
 // router setup
@@ -31,12 +32,12 @@ Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 
 var url = window.location.href
-var arr = url.split(":");
-var domain = arr[1].split("/")[2];
-console.log('https://hub-'+domain+':42160/dashboard')
+var main_parts = url.split("/")
+var main_url = main_parts[0]+"//hub-"+main_parts[2]+"/dashboard"
+console.log("Connecting to "+main_url)
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'https://hub-'+domain+':42160/dashboard',
+  connection: io(main_url),
   vuex: {
     store,
     actionPrefix: "SOCKET_",
