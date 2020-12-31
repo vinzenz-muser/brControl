@@ -1,4 +1,8 @@
 flask
 waitress
+PyMySQL
 flask-sqlalchemy
+flask-wtf
 flask-migrate
+email_validator
+

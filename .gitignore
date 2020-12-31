@@ -1,7 +1,7 @@
 dist
 .editorconfig
 node_modules
-*/static/*
+*/static/dash
 *.pyc
 .DS_Store
 !.keep

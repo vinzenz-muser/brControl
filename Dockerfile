@@ -13,10 +13,17 @@ RUN pip install -r requirements.txt
 
 WORKDIR /
 COPY config.py .
+COPY entrypoint.sh .
+RUN chmod u+x entrypoint.sh
 
 WORKDIR /admin
 COPY admin/. .
 COPY --from=build-stage /dashboard/dist /admin/static/dash
 
+WORKDIR /migrations
+copy migrations/. .
+
+ENV FLASK_APP=app
+
 WORKDIR /
-CMD ["waitress-serve", "admin:app"]
+ENTRYPOINT ["./entrypoint.sh"]

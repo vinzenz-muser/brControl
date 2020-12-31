@@ -1,0 +1,66 @@
+{% extends "default.html" %}
+{% set active_page = "users" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+            <h4 class="card-title">Users</h4>
+            <p class="card-category">Manage the users of the Control</p>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Name</th>
+                            <th>Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.active }}</td>
+                                <td class="td-actions text-right">
+                                    <button type="button" rel="tooltip" class="btn btn-info">
+                                        <i class="material-icons ri-pencil-line"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{ user.id }}" rel="tooltip" class="btn btn-danger">
+                                        <i class="material-icons ri-delete-bin-5-line"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="delete{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="delete{{ user.id }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="delete{{ user.id }}Label">Delete user</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    Are you sure you want to delete the user {{ user.username }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a href={{url_for("users.delete", id=user.id) }}><button type="button" class="btn btn-danger">Delete</button></a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                        <div class="clearfix"></div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

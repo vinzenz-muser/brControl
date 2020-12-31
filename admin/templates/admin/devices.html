@@ -1,0 +1,45 @@
+{% extends "default.html" %}
+{% set active_page = "devices" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+            <h4 class="card-title">Devices</h4>
+            <p class="card-category">Manage the devices of Control</p>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>API-Key</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>Andrew Mike</td>
+                            <td>Danis Keller</td>
+                            <td>2013</td>
+                            <td class="td-actions text-right">
+                                <button type="button" rel="tooltip" class="btn btn-info">
+                                    <i class="material-icons ri-pencil-line"></i>
+                                </button>
+                                <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="material-icons ri-delete-bin-5-line"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
