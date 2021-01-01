@@ -4,5 +4,6 @@ PyMySQL
 flask-sqlalchemy
 flask-wtf
 flask-migrate
+flask-login
 email_validator
 

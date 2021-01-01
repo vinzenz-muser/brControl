@@ -23,7 +23,7 @@ COPY --from=build-stage /dashboard/dist /admin/static/dash
 WORKDIR /migrations
 copy migrations/. .
 
-ENV FLASK_APP=app
+ENV FLASK_APP=admin
 
 WORKDIR /
 ENTRYPOINT ["./entrypoint.sh"]
