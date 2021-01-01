@@ -11,16 +11,16 @@
 
             <div>
               <ValidationProvider
-                name="email"
-                rules="required|email"
+                name="Username"
+                rules="required"
                 v-slot="{ passed, failed, errors }"
               >
               <base-input
                 required
-                v-model="email"
-                type="email"
-                placeholder="Email"
-                addon-left-icon="tim-icons icon-email-85"
+                v-model="username"
+                type="text"
+                placeholder="Username"
+                addon-left-icon="tim-icons icon-minimal-right"
                 :error="errors[0]"
                 :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
               </base-input>
@@ -61,22 +61,22 @@ import { required, email, min } from "vee-validate/dist/rules";
 import sha256 from "js-sha256";
 import Vue from "vue"
 
-extend("email", email);
 extend("min", min);
 extend("required", required);
 
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: ""
     };
   },
   methods: {
     submit() {
+      // var addpass = sha256(this.password)
       let ans = {
-        "email": this.email,
-        "password": sha256(this.password)
+        "username": this.username,
+        "password": this.password
       }
       this.$socket.emit('login', ans)
     }

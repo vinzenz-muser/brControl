@@ -10,8 +10,13 @@
             // Connect to the Socket.IO server.
             // The connection URL has the following format, relative to the current page:
             //     http[s]://<domain>:<port>[/<namespace>]
-            var socket = io("https://hub-brauerei.brauradau.ch/sensor");
-
+            //var socket = io("https://hub-brauerei.brauradau.ch/sensor?api_key=uQLm9kttaOR4XDDUTQasq1BV4kPcSuBMwsWd1eMIob4");
+            var socket = io("http://localhost:42160/sensor", {
+                    query: {
+                        api_key: "uQLm9kttaOR4XDDUaTQasq1BV4kPcSuBMwsWd1eMIob4"
+                    }
+                }
+            );
 
             // Event handler for new connections.
             // The callback function is invoked when a connection with the
