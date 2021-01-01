@@ -5,10 +5,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8">
-        <div class="card">
+            <div class="card">
             <div class="card-header card-header-primary">
-            <h4 class="card-title">Users</h4>
-            <p class="card-category">Manage the users of the Control</p>
+            <h3 class="card-title">User-List</h3>
+            <p class="card-category">Manage the users of Control</p>
             </div>
             <div class="card-body">
                 <table class="table">
@@ -22,13 +22,15 @@
                     <tbody>
                         {% for user in users %}
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">{{ user.id }}</td>
                                 <td>{{ user.username }}</td>
                                 <td>{{ user.active }}</td>
                                 <td class="td-actions text-right">
-                                    <button type="button" rel="tooltip" class="btn btn-info">
-                                        <i class="material-icons ri-pencil-line"></i>
-                                    </button>
+                                    <a href={{url_for("users.edit", id=user.id) }}>
+                                        <button type="button" rel="tooltip" class="btn btn-info">
+                                            <i class="material-icons ri-pencil-line"></i>
+                                        </button>
+                                    </a>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete{{ user.id }}" rel="tooltip" class="btn btn-danger">
                                         <i class="material-icons ri-delete-bin-5-line"></i>
                                     </button>
@@ -54,12 +56,51 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
-                        <div class="clearfix"></div>
                     </tbody>
                 </table>
             </div>
+            </div>
         </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header card-header-success">
+                    <h3 class="card-title">Create user</h3>
+                    <p class="card-category">Fill out form to add a new user</p>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="row mb-4 mt-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.username.label }}</label>
+                                {{ form.username(class="form-control") }}
+                                {% for error in form.username.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.password.label }} {% if user %} (leave empty if unchanged) {% endif %}</label>
+                                {{ form.password(class="form-control") }}
+                                {% for error in form.password.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.password2.label }}</label>
+                                {{ form.password2(class="form-control") }}
+                                {% for error in form.password2.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        </div>
+                        <button type="submit" class="btn btn-success pull-right">Create</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 </div>

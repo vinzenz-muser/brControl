@@ -2,22 +2,28 @@ import datetime
 from admin import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+import secrets
 
 
 class Device(db.Model):
-    id = db.Column(db.String(64), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
-    apiKey = db.Column(db.String(64), nullable=False, server_default="no-key")
-    
+    apiKey = db.Column(db.String(64), nullable=False, unique=True)
+    sensors = db.relationship('Sensor', backref='deviceid', lazy='dynamic')
+    type = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)    
+        return '<User {}>'.format(self.username)
+
+    def set_api_key(self):
+        token = secrets.token_urlsafe(32)
+        self.apiKey = token
 
 
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    deviceId = db.Column(db.String(64), db.ForeignKey('device.id'), nullable=False)
+    deviceId = db.Column(db.Integer, db.ForeignKey('device.id'), nullable=False)
     name = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):

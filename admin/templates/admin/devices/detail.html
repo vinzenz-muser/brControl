@@ -1,0 +1,263 @@
+{% extends "default.html" %}
+{% set active_page = "devices" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h3 class="card-title">{{ device.name }}</h3>
+            <p class="card-category">Location: {{ device.location }}</p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-12"> 
+                    <h3>
+                        Basic information: 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-sm-12"> 
+                    <div>
+                        Name: 
+                        <h4>
+                            {{ device.name }}
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-sm-12"> 
+                    <div>
+                        Location: 
+                        <h4>
+                            {{ device.location }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-5 col-sm-12"> 
+                    <button type="button" data-toggle="modal" data-target="#editModal" rel="tooltip" class="btn btn-info btn-round" >
+                        <i class="material-icons ri-pencil-line"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-lg-12"> 
+                    <h3>
+                        API-Key: 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-sm-12"> 
+                    <div>
+                        <h4>
+                            {{ device.apiKey }}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-5 col-sm-12"> 
+                    <button type="button" data-toggle="modal" data-target="#refreshModal" rel="tooltip" class="btn btn-info btn-round">
+                        <i class="material-icons ri-refresh-line"></i> Generate new key
+                    </button>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-lg-12"> 
+                    <h3>
+                        Sensors: 
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-sm-12"> 
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sensor in sensors %}
+                            <tr>
+                                <td class="text-center">{{ sensor.id }}</td>
+                                <td>{{ sensor.name}}</td>
+
+                                <td class="td-actions text-right">
+                                    <button type="button" data-toggle="modal" data-target="#modifySensor{{ sensor.id }}" rel="tooltip" class="btn btn-info btn-lg" >
+                                        <i class="material-icons ri-pencil-line"></i>
+                                    </button>
+                                    <button type="button" data-toggle="modal" data-target="#deleteSensor{{ sensor.id }}" rel="tooltip" class="btn btn-danger btn-lg" >
+                                        <i class="material-icons ri-delete-bin-5-line"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="deleteSensor{{ sensor.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteSensor{{ sensor.id }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteSensor{{ sensor.id }}Label">Delete Sensor</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    Are you sure you want to delete the sensor with ID {{ sensor.id }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a href="{{ url_for('devices.deletesensor', id=device.id, sensorid=sensor.id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
+                                    </div> 
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="modifySensor{{ sensor.id }}" tabindex="-1" role="dialog" aria-labelledby="modifySensor{{ sensor.id }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="modifySensor{{ sensor.id }}Label">Modifry the sensor #{{ sensor.id }}</h3>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('devices.modifysensor', id=device.id, sensorid=sensor.id) }}" method="post">
+                                            {{ form.hidden_tag() }}
+                                            <div class="row mt-4 mb-4">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="bmd-label-floating">{{ sensorform.name.label }}</label>
+                                                        {{ sensorform.name(class="form-control") }}
+                                                        {% for error in sensorform.name.errors %}
+                                                        <span class="text-danger">{{ error }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-success pull-right">Save changes</button>
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-lg-5 col-sm-12"> 
+                    <button type="button" data-toggle="modal" data-target="#addSensorModal" rel="tooltip" class="btn btn-success btn-round">
+                        <i class="material-icons ri-add-line"></i> Add new sensor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="refreshModal" tabindex="-1" role="dialog" aria-labelledby="refreshModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="refreshModalLabel">Generate new API-Key</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <p>Are you sure you want to delete the refresh the API-Key? </p>
+            <p>All existing device-connections will have to be updated.</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a href={{url_for("devices.refreshapi", id=device.id) }}><button type="button" class="btn btn-danger">Refresh</button></a>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="refreshModalLabel">Edit base information</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="row mt-4 mb-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.name.label }}</label>
+                                {{ form.name(class="form-control") }}
+                                {% for error in form.name.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4 mb-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.location.label }}</label>
+                                {{ form.location(class="form-control") }}
+                                {% for error in form.location.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success pull-right">Save changes</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addSensorModal" tabindex="-1" role="dialog" aria-labelledby="addSensorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addSensorModalLabel">Enter information of new sensor</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('devices.addsensor', id=device.id) }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="row mt-4 mb-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ sensorform.name.label }}</label>
+                                {{ sensorform.name(class="form-control") }}
+                                {% for error in sensorform.name.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success pull-right">Save changes</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

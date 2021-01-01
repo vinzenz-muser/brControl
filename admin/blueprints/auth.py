@@ -10,26 +10,9 @@ from admin import app
 from admin import db
 from admin.models import User
 from flask_login import current_user, login_user, logout_user
-from admin.forms import LoginForm, RegistrationForm
-
+from admin.forms import LoginForm
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, active=1)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('auth.login'))
-        
-    return render_template('auth/register.html', title='Register', form=form)
 
 
 @bp.route('/login', methods=('GET', 'POST'))

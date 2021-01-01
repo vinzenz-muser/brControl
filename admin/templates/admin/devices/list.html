@@ -1,0 +1,105 @@
+{% extends "default.html" %}
+{% set active_page = "devices" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+        <div class="card">
+            <div class="card-header card-header-primary">
+            <h3 class="card-title">Device-List</h3>
+            <p class="card-category">Manage the devices of Control</p>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>API-Key</th>
+                            <th>Device-Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in devices %}
+                        <tr>
+                            <td class="text-center">{{ device.id }}</td>
+                            <td>{{ device.name }}</td>
+                            <td>{{ device.location }}</td>
+                            <td>{{ device.apiKey[:10] }}...</td>
+                            <td>{{ device.type }}</td>
+                            <td class="td-actions text-right">
+                                <a href="{{ url_for('devices.detail', id=device.id) }}">
+                                    <button type="button" rel="tooltip" class="btn btn-info">
+                                        <i class="material-icons ri-pencil-line"></i>
+                                    </button>
+                                </a>
+                                <button type="button"  data-toggle="modal" data-target="#deleteDevice{{ device.id }}" rel="tooltip" class="btn btn-danger">
+                                    <i class="material-icons ri-delete-bin-5-line"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+
+                        <div class="modal fade" id="deleteDevice{{ device.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteDevice{{ device.id }}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="deleteDevice{{ device.id }}Label">Delete Device {{ device.id }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                Are you absolutely sure that you want to delete the device  <b>{{ device.name }}</b>? Note: This will delete all the sensors and all the data connected to this device!
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <a href="{{ url_for('devices.delete', id=device.id) }}"><button type="button" class="btn btn-danger">Delete</button></a>
+                                </div> 
+                            </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header card-header-success">
+                <h3 class="card-title">Create device</h3>
+                <p class="card-category">Add another device</p>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="row mt-4 mb-4">
+                          <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.name.label }}</label>
+                                {{ form.name(class="form-control") }}
+                                {% for error in form.name.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.location.label }}</label>
+                                {{ form.location(class="form-control") }}
+                                {% for error in form.location.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-success pull-right">Create</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

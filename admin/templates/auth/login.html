@@ -1,24 +1,38 @@
 {% extends "auth.html" %}
 
 {% block content %}
+<div class="container">
     <h1>Sign In</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+                <label class="bmd-label-floating">{{ form.username.label }}</label>
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <div class="form-group">
+                <label class="bmd-label-floating">{{ form.password.label }}</label>
+                {{ form.password(class="form-control") }}
+                {% for error in form.password.errors %}
+                <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+          </div>
+        </div> 
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                <div class="clearfix"></div>
+            </div>
+        </div> 
     </form>
+</div>
 {% endblock %}

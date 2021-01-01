@@ -16,6 +16,7 @@ login = LoginManager(app)
 login.login_view = 'auth.login'
 
 from admin import routes, models, forms
+from admin.commands import usercommands, devicecommands
 from admin.blueprints import users, devices, auth
 
 app.register_blueprint(auth.bp)
