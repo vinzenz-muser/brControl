@@ -2,22 +2,6 @@
   <nav :class="classes" class="navbar">
     <div :class="containerClasses">
       <slot name="brand"></slot>
-
-      <slot name="toggle-button">
-        <button
-          class="navbar-toggler collapsed"
-          v-if="hasMenu"
-          type="button"
-          @click="toggleMenu"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-        </button>
-      </slot>
-
       <CollapseTransition
         @after-leave="onTransitionEnd"
         @before-enter="onTransitionStart"
