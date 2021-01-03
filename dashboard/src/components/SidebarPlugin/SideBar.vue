@@ -26,6 +26,14 @@
           </sidebar-item>
         </slot>
       </ul>
+      <ul class="nav logout-nav">
+          <li class="">
+            <a href="#" @click="logout" class="">
+                <i class="tim-icons icon-button-power"></i>
+                <p>Logout</p>
+            </a>
+          </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -89,6 +97,9 @@ export default {
       if (this.$sidebar) {
         this.$sidebar.toggleMinimize();
       }
+    },
+    logout() {
+      this.$socket.emit('logout', this.session)
     }
   },
   beforeDestroy() {

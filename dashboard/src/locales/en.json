@@ -37,7 +37,8 @@
     "vectorMaps": "Vector Maps",
     "widgets": "Widgets",
     "charts": "Charts",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "logout": "Logout"
   },
   "devices": {
     "showhistory": "Show past Data",
