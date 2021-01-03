@@ -41,7 +41,8 @@
     "logout": "Logout"
   },
   "devices": {
-    "showhistory": "Show past Data",
-    "active": "Active"
+    "details": "Show details and manage device",
+    "active": "Active",
+    "inactive": "Inactive"
   }
 }

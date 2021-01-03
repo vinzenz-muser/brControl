@@ -10,11 +10,11 @@ class Device(db.Model):
     location = db.Column(db.String(64), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     apiKey = db.Column(db.String(64), nullable=False, unique=True)
-    sensors = db.relationship('Sensor', backref='deviceid', lazy='dynamic')
+    sensors = db.relationship('Sensor', backref='device', lazy='dynamic', cascade="all, delete-orphan")
     type = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return f'<User {self.id} Type {self.type}>'
 
     def set_api_key(self):
         token = secrets.token_urlsafe(32)
@@ -25,6 +25,7 @@ class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceId = db.Column(db.Integer, db.ForeignKey('device.id'), nullable=False)
     name = db.Column(db.String(64), nullable=False)
+    datapoints = db.relationship('Sensordata', backref='sensor', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
         return '<Sensor {} from device {}>'.format(self.name, self.deviceId)    

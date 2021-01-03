@@ -87,6 +87,15 @@ export default {
         'Whether sidebar should autoclose on mobile when clicking an item'
     }
   },
+  computed: {
+    session() {
+        return {
+          "email": localStorage.email,
+          "name": localStorage.name,
+          "token": localStorage.token
+        }
+    }
+  },
   provide() {
     return {
       autoClose: this.autoClose

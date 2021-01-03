@@ -6,7 +6,8 @@ import Dashboard from '../pages/Dashboard.vue'
 import Devices from '../pages/Devices.vue'
 import NotFound from '../pages/NotFound.vue'
 import Login from '../pages/Login.vue'
-import DevicesDetail from '../pages/DevicesDetail.vue'
+import DevicesDetail from '../pages/SensorDeviceDetail.vue'
+import ControlDeviceDetail from '../pages/ControlDeviceDetail.vue'
 
 Vue.use(Router);
 
@@ -36,10 +37,16 @@ export default new Router({
           props: {}
         },
         {
-          path: '/devices/:name',
+          path: '/sensordevice/:id',
           name: 'deviceDetail',
           component: DevicesDetail,
-          props: {}
+          props: true
+        },
+        {
+          path: '/controldevice/:id',
+          name: 'controlDeviceDetail',
+          component: ControlDeviceDetail,
+          props: true
         }
       ]
     },

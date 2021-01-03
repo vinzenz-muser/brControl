@@ -24,7 +24,7 @@ module.exports = {
     ]
   },
   pwa: {
-    name: 'Vue Black Dashboard PRO',
+    name: 'Brauradau Dashboard',
     themeColor: '#344675',
     msTileColor: '#344675',
     appleMobileWebAppCapable: 'yes',

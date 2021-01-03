@@ -92,6 +92,13 @@
                                 <span class="text-danger">{{ error }}</span>
                                 {% endfor %}
                             </div>
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.devicetype.label }}</label>
+                                {{ form.devicetype(class="form-control") }}
+                                {% for error in form.location.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
                           </div>
                         </div>
                         <button type="submit" class="btn btn-success pull-right">Create</button>

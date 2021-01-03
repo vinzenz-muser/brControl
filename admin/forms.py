@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from admin.models import User, Sensor
 
@@ -45,6 +45,7 @@ class EditUserForm(FlaskForm):
 class AddDeviceform(FlaskForm):
     location = StringField('Location')
     name = StringField('Name')
+    devicetype = SelectField(u'Device Type', choices=[('sensors', 'Sensors'), ('control', 'Temperature control')])
     submit = SubmitField('Save User')
 
 class AddSensorForm(FlaskForm):

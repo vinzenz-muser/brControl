@@ -2,7 +2,7 @@
     <div>
       <div class="row">
         <div class="col-lg-10">
-          <h1>h1. Bootstrap heading</h1>
+          <h1>Sensor Details</h1>
         </div>
         <div class="col-lg-2">
                 <base-button size="sm" type="primary" v-on:click="$router.go(-1)">Go Back</base-button>

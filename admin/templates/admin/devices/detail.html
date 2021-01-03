@@ -33,6 +33,14 @@
                         </h4>
                     </div>
                 </div>
+                <div class="col-lg-5 col-sm-12"> 
+                    <div>
+                        Type: 
+                        <h4>
+                            {{ device.type }}
+                        </h4>
+                    </div>
+                </div>
             </div>
             <div class="row mt-4">
                 <div class="col-lg-5 col-sm-12"> 
@@ -214,6 +222,17 @@
                                 <label class="bmd-label-floating">{{ form.location.label }}</label>
                                 {{ form.location(class="form-control") }}
                                 {% for error in form.location.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4 mb-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ form.devicetype.label }}</label>
+                                {{ form.devicetype(class="form-control") }}
+                                {% for error in form.devicetype.errors %}
                                 <span class="text-danger">{{ error }}</span>
                                 {% endfor %}
                             </div>
