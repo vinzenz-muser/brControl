@@ -15,15 +15,15 @@
                             <th class="text-center"></th>
                           </template>  
                           <template slot-scope="{row}">
-                            <td>{{row.ID}}</td>
-                            <td>{{row.Device}}</td>
-                            <td>{{row.Location}}</td>
+                            <td>{{row.id}}</td>
+                            <td>{{row.device}}</td>
+                            <td>{{row.location}}</td>
                             <td>
-                              <badge type="success" v-if="activeIndicator[row.ID]">{{$t('devices.active')}}</badge>
+                              <badge type="success" v-if="row.active">{{$t('devices.active')}}</badge>
                               <badge type="default" v-else>{{$t('devices.inactive')}}</badge>
                             </td>
                             <td class="td-actions text-right">
-                            <router-link :to="{ name: 'deviceDetail', params: { id: row.ID }}">
+                            <router-link :to="{ name: 'deviceDetail', params: { id: row.id }}">
                                 <base-button type="success" size="sm" icon>
                                   <i class="tim-icons icon-zoom-split"></i>
                                 </base-button>
@@ -51,15 +51,15 @@
                             <th class="text-center"></th>
                           </template>  
                           <template slot-scope="{row}">
-                            <td>{{row.ID}}</td>
-                            <td>{{row.Device}}</td>
-                            <td>{{row.Location}}</td>
+                            <td>{{row.id}}</td>
+                            <td>{{row.device}}</td>
+                            <td>{{row.location}}</td>
                             <td>
-                              <badge type="success" v-if="activeIndicator[row.ID]">{{$t('devices.active')}}</badge>
+                              <badge type="success" v-if="row.active">{{$t('devices.active')}}</badge>
                               <badge type="default" v-else>{{$t('devices.inactive')}}</badge>
                             </td>
                             <td class="td-actions text-right">
-                            <router-link :to="{ name: 'controlDeviceDetail', params: { id: row.ID }}">
+                            <router-link :to="{ name: 'controlDeviceDetail', params: { id: row.id }}">
                                 <base-button type="success" size="sm" icon>
                                   <i class="tim-icons icon-zoom-split"></i>
                                 </base-button>
@@ -84,10 +84,7 @@
     props: ['id'],
     computed: {
       allDevices () {
-        return this.$store.state.allDevices
-      },
-      activeDevices () {
-        return this.$store.state.activeDevices
+        return this.$store.state.devices
       },
       activeIndicator () {
         let ans = {};
@@ -100,7 +97,7 @@
       controlDevices() {
         let ans = [];
         for (const [index, device] of Object.entries(this.allDevices)) {
-          if (device.Type == "control") {
+          if (device.type == "control") {
             ans.push(device);
           }
         }
@@ -109,7 +106,7 @@
       sensorDevices() {
         let ans = [];
         for (const [index, device] of Object.entries(this.allDevices)) {
-          if (device.Type == "sensors") {
+          if (device.type == "sensors") {
             ans.push(device);
           }
         }
@@ -118,7 +115,7 @@
       }
     },
     created() {
-      this.$socket.emit('update_sensors')
+
     },
     watch: {
 

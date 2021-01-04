@@ -26,6 +26,9 @@ class Sensor(db.Model):
     deviceId = db.Column(db.Integer, db.ForeignKey('device.id'), nullable=False)
     name = db.Column(db.String(64), nullable=False)
     datapoints = db.relationship('Sensordata', backref='sensor', lazy='dynamic', cascade="all, delete-orphan")
+    target = db.Column(db.Float, nullable=True)
+    accuracy = db.Column(db.Float, nullable=True)
+    suffix = db.Column(db.String(32), nullable=False, server_default="°C")
 
     def __repr__(self):
         return '<Sensor {} from device {}>'.format(self.name, self.deviceId)    

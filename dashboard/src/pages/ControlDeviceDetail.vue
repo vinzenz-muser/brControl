@@ -28,7 +28,7 @@
                                 <div>
                                     Name:
                                     <h4>
-                                        {{ activeDevice.Device }}
+                                        {{ activeDevice.device }}
                                     </h4>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                 <div>
                                     Location:
                                     <h4>
-                                        {{ activeDevice.Location }}
+                                        {{ activeDevice.location }}
                                     </h4>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                         <div>
                             <div class="col-lg-12 col-sm-12">
                                 <div>
-                                    <el-table class="table-striped" :data="activeDevice.Sensors">
+                                    <el-table class="table-striped" :data="activeDevice.sensors">
                                         <el-table-column type="index">
                                         </el-table-column>
                                         <el-table-column prop="name" label="Name">
@@ -67,8 +67,8 @@
                                         <el-table-column label="Last known accuracy">
                                         </el-table-column>
                                         <el-table-column :open-delay="300" placement="top" max-width="50">
-                                            <base-button type="danger" size="sm" icon>
-                                                <i class="tim-icons icon-simple-remove"></i>
+                                            <base-button type="info" size="sm" icon>
+                                                <i class="tim-icons icon-pencil"></i>
                                             </base-button>
                                         </el-table-column>
                                     </el-table>
@@ -153,20 +153,17 @@
         },
         computed: {
             allDevices() {
-                return this.$store.state.allDevices
-            },
-            activeDevices() {
-                return this.$store.state.activeDevices
+                return this.$store.state.devices
             },
             activeDevice() {
                 let _this = this;
                 let ans = {};
                 for (const [index, device] of Object.entries(this.allDevices)) {
-                    if (_this.id == device.ID) {
+                    if (_this.id == device.id) {
                         ans = device;
                     }
                 }
-                console.log(ans.Sensors)
+                console.log(ans)
                 return ans;
             }
         },
