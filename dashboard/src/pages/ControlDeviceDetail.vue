@@ -11,10 +11,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header card-header-primary">
-                        <h3 class="card-title">Information</h3>
-                        <p class="card-category"></p>
-                    </div>
+
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
@@ -33,7 +30,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-lg-5 col-sm-12">
                                 <div>
@@ -44,71 +40,120 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-5 col-sm-12">
+                                <div>
+                                    Connection:
+                                    <h4 v-if="activeDevice.active">
+                                        online
+                                    </h4>
+                                    <h4 v-else>
+                                        offline
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
 
-                        <div class="row mt-4">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
                             <div class="col-lg-12">
                                 <h3>
                                     Controllers
                                 </h3>
                             </div>
                         </div>
-                        <div>
-                            <div class="col-lg-12 col-sm-12">
-                                <div>
-                                    <el-table class="table-striped" :data="activeDevice.sensors">
-                                        <el-table-column type="index">
-                                        </el-table-column>
-                                        <el-table-column prop="name" label="Name">
-                                        </el-table-column>
-                                        <el-table-column label="Active">
-                                        </el-table-column>
-                                        <el-table-column label="Last known target">
-                                        </el-table-column>
-                                        <el-table-column label="Last known accuracy">
-                                        </el-table-column>
-                                        <el-table-column :open-delay="300" placement="top" max-width="50">
-                                            <base-button type="info" size="sm" icon>
-                                                <i class="tim-icons icon-pencil"></i>
-                                            </base-button>
-                                        </el-table-column>
-                                    </el-table>
-                                    </h4>
+                        <div class="row mb-3">
+                            <div class="col-lg-2">
+                                Id
+                            </div>
+                            <div class="col-lg-2">
+                                Name
+                            </div>
+                            <div class="col-lg-2">
+                                Last known target
+                            </div>
+                            <div class="col-lg-2">
+                                Last known accuracy
+                            </div>
+                        </div>
+                        <div class="row mb-3" v-for="(sensor, index) in activeDevice.sensors">
+                            <div class="col-lg-2">
+                                <h5>{{ sensor.id }}</h5>
+                            </div>
+                            <div class="col-lg-2">
+                                <h5>{{ sensor.name }}</h5>
+                            </div>
+                            <div class="col-lg-2">
+                                <h5 v-if="sensor.target">{{ sensor.target }}</h5>
+                                <h5 v-else>No Data</h5>
+                            </div>
+                            <div class="col-lg-2">
+                                <h5 v-if="sensor.accuracy">{{ sensor.accuracy }}</h5>
+                                <h5 v-else>No Data</h5>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="text-right">
+                                    <div>
+                                        <base-button size="sm" icon type="primary" @click="activateSensor(index)">
+                                            <i class="tim-icons icon-pencil"></i>
+                                        </base-button>
+                                        <modal :show="modals[index]" body-classes="p-0">
+                                            <card type="secondary"
+                                            header-classes="bg-white pb-5"
+                                            body-classes="px-lg-5 py-lg-5"
+                                            class="border-0 mb-0">
+                                                <div>
+                                                    <ValidationObserver v-slot="{ handleSubmit }">
+                                                        <form class="form-horizontal"
+                                                        @submit.prevent="handleSubmit(onSubmit(sensor, index))">
+                                                            <span slot="header">
+                                                            Change temperatures of
+                                                            </span>
+                                                            <h2 class="card-title mb-4">{{ sensor.name }}</h2>
+                                                            <h4 class="card-title">Target temperature:</h4>
+                                                            <ValidationProvider name="Temperature"
+                                                            rules="required|min_value:0|max_value:100"
+                                                            v-slot="{ passed, failed, errors }">
+                                                                <base-input v-model="targettemps[index]" :error="errors[0]"
+                                                                :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                                                                <small slot="helperText" id="emailHelp"
+                                                                class="form-text text-muted">Choose the target
+                                                                temperature between
+                                                                0 and 100 degrees.</small>
+                                                                </base-input>
+                                                            </ValidationProvider>
+                                                            <h4 class="card-title">Accuracy:</h4>
+                                                            <ValidationProvider name="Accuracy"
+                                                            rules="required|min_value:1|max_value:10"
+                                                            v-slot="{ passed, failed, errors }">
+                                                                <base-input v-model="targetaccuracies[index]" :error="errors[0]"
+                                                                :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                                                                <small slot="helperText" id="emailHelp"
+                                                                class="form-text text-muted">Choose the target
+                                                                accuracy between 1
+                                                                and 10 degrees.</small>
+                                                                </base-input>
+                                                            </ValidationProvider>
+                                                            <base-button type="secondary" @click="deactivateSensor(index)">Close</base-button>
+                                                            <base-button native-type="onSubmit" @act type="primary">Save</base-button>
+                                                        </form>
+                                                    </ValidationObserver>
+                                                </div>
+                                            </card>
+                                        </modal>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="col-sm-12">
-                <form class="form-horizontal" @submit.prevent="handleSubmit(submit)">
-                    <card type="danger" class="card-success">
-                        <span slot="header">
-                            Change temperatures
-                        </span>
-                        <h2 class="card-title mb-4">Change the target temperature of the device</h2>
-                        <h4 class="card-title">Target temperature:</h4>
-                        <ValidationProvider name="Temperature" rules="required|min_value:0|max_value:100"
-                            v-slot="{ passed, failed, errors }">
-                            <base-input v-model="targettemp" :error="errors[0]"
-                                :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
-                                <small slot="helperText" id="emailHelp" class="form-text text-muted">Choose the target
-                                    temperature between
-                                    0 and 100 degrees.</small>
-                            </base-input>
-                        </ValidationProvider>
-                        <h4 class="card-title">Accuracy:</h4>
-                        <ValidationProvider name="Accuracy" rules="required|min_value:1|max_value:10"
-                            v-slot="{ passed, failed, errors }">
-                            <base-input v-model="targetaccuracy" :error="errors[0]"
-                                :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
-                                <small slot="helperText" id="emailHelp" class="form-text text-muted">Choose the target
-                                    accuracy between 1
-                                    and 10 degrees.</small>
-                            </base-input>
-                        </ValidationProvider>
-                        <base-button native-type="submit" type="primary">Update configuration</base-button>
-                    </card>
-                </form>
+
             </div>
         </div>
     </ValidationObserver>
@@ -116,8 +161,9 @@
 <script>
     import Vue from "vue"
     import { DatePicker, TimeSelect, For, Table, TableColumn } from 'element-ui'
-    import { BaseInput, BaseButton, BaseTable } from '@/components';
+    import { BaseInput, BaseButton, BaseTable, Modal } from '@/components';
     import { extend } from "vee-validate";
+
     import {
         required,
         min,
@@ -137,9 +183,10 @@
         props: ['id'],
         data() {
             return {
-                targettemp: "",
-                targetaccuracy: "",
+                targettemps: [],
+                targetaccuracies: [],
                 active: false,
+                modals: [],
             }
         },
         components: {
@@ -150,10 +197,12 @@
             BaseInput,
             BaseButton,
             BaseTable,
+            Modal,
         },
         computed: {
             allDevices() {
-                return this.$store.state.devices
+                let devices = this.$store.state.devices
+                return devices
             },
             activeDevice() {
                 let _this = this;
@@ -163,21 +212,41 @@
                         ans = device;
                     }
                 }
-                console.log(ans)
+
                 return ans;
             }
         },
         watch: {
-            allDevices() {
-                this.updateActiveDevice()
+            activeDevice() {
+                this.modals.splice(0)
+                this.targettemps.splice(0)
+                this.targetaccuracies.splice(0)
+
+                for (const sensor in this.activeDevice.sensors) {
+                    let current_sens = this.activeDevice.sensors[sensor]
+                    this.modals.push(false);
+                    this.targettemps.push(current_sens.target)
+                    this.targetaccuracies.push(current_sens.accuracy)
+                }
+                console.log(this.targettemps)
+                console.log(this.targetaccuracies)
             }
         },
         methods: {
-            updateActiveDevice() {
-
+            activateSensor(index) {
+                Vue.set(this.modals, index, true)
             },
-            submit() {
-                alert("Form has been submitted!");
+            deactivateSensor(index) {
+                Vue.set(this.modals, index, false)
+            },
+            onSubmit(sensor, index) {
+                this.$socket.emit('update_controller', {
+                    "device_id": this.activeDevice.id,
+                    "sensor_id": sensor.id,
+                    "value": this.targettemps[index],
+                    "accuracy": this.targetaccuracies[index]
+                })
+                this.deactivateSensor(index)
             }
         }
     };

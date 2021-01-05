@@ -16,7 +16,10 @@ export default new Vuex.Store({
             Vue.set(state.devices[data.deviceid], "active", true)
             let sensorid = 0;
             let date = new Date();
-            let dateString = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
+            let minutes =  date.getMinutes()
+            let seconds =  date.getSeconds()
+            let hours = date.getHours()
+            let dateString = (hours < 10 ? '0' : '') + hours  + ":" + (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds
 
             for (sensorid in data.data) {
                 for (let sensorindex in state.devices[data.deviceid].sensors) {

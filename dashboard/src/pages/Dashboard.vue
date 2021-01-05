@@ -9,7 +9,7 @@
               <h3 class="card-title"> {{ device.device }} </h3>
               <h5 class="card-subtitle mb-2 text-muted">Location: {{ device.location }}</h5>
               <h5 class="card-subtitle mb-2 text-muted">Sensor: {{ device.sensors[device.activeSensor].name }}</h5>
-              <h5 class="card-subtitle mb-2 text-muted">Value of: {{ device.sensors[device.activeSensor].lastTime }}</h5>
+              <h5 v-if="device.sensors[device.activeSensor].lastValue" class="card-subtitle mb-2 text-muted">Time: {{ device.sensors[device.activeSensor].lastTime }}</h5>
               
             </div>
             <div class="col-sm-6 d-flex d-sm-block">
@@ -32,7 +32,8 @@
               </div>
             </div>
             <div class="card-body text-center">
-              <h1 class="title">{{ device.sensors[device.activeSensor].lastValue | round }}°C</h1>
+              <h1 v-if="device.sensors[device.activeSensor].lastValue" class="title">{{ device.sensors[device.activeSensor].lastValue | round }}°C</h1>
+              <h1 v-else class="title">No value</h1>
             </div>
           </div>
         </template>

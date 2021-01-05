@@ -42,7 +42,7 @@
   },
   "devices": {
     "details": "Show details and manage device",
-    "active": "Active",
-    "inactive": "Inactive"
+    "active": "Online",
+    "inactive": "Offline"
   }
 }

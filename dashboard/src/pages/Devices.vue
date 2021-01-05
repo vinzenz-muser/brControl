@@ -11,7 +11,7 @@
                             <th class="text-left">#</th>
                             <th>Name</th>
                             <th>Location</th>
-                            <th>Active</th>
+                            <th>Connection</th>
                             <th class="text-center"></th>
                           </template>  
                           <template slot-scope="{row}">
@@ -47,7 +47,7 @@
                             <th class="text-left">#</th>
                             <th>Name</th>
                             <th>Location</th>
-                            <th>Active</th>
+                            <th>Connection</th>
                             <th class="text-center"></th>
                           </template>  
                           <template slot-scope="{row}">
