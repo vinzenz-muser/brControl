@@ -11,6 +11,7 @@ import GlobalDirectives from './globalDirectives';
 // Sidebar on the right. Used as a local plugin in DashboardLayout.vue
 import SideBar from 'src/components/SidebarPlugin';
 
+
 // element ui language configuration
 import lang from 'element-ui/lib/locale/lang/en';
 import locale from 'element-ui/lib/locale';

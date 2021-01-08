@@ -68,9 +68,6 @@
       }
     },
     filters: {
-      round (value) {
-        return Math.round(value * 10) / 10
-      },
       roman (value) {
         if (value <= 3) {
           let ans = ""

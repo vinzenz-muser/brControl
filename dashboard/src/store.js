@@ -37,6 +37,18 @@ export default new Vuex.Store({
         "SOCKET_update_sensors"(state, data) {
             state.devices = data
         },
+        "SOCKET_update_sensor_values"(state, data) {
+            let current_device = state.devices[data["deviceId"]]
+
+            for (const sid in current_device.sensors) {
+                if (current_device.sensors[sid].id == data.id) {
+                    let current_sensor = current_device.sensors[sid] 
+                    for (const key in data) {
+                        Vue.set(current_sensor, key, data[key])
+                    }
+                }
+            }
+        },
         "SOCKET_login_successful"(state, data) {
             localStorage.email = data["email"]
             localStorage.token = data["token"]

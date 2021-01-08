@@ -34,7 +34,7 @@ Vue.use(RouterPrefetch);
 var url = window.location.href
 var main_parts = url.split("/")
 var main_url = main_parts[0]+"//hub-"+main_parts[2]+"/dashboard"
-console.log("Connecting to "+main_url)
+
 Vue.use(new VueSocketIO({
   debug: false,
   connection: io(main_url),
@@ -44,6 +44,11 @@ Vue.use(new VueSocketIO({
     mutationPrefix: "SOCKET_"
   }
 }));
+
+Vue.filter('round', function(value) {
+    return Math.round(value * 10) / 10
+  },
+)
 
 
 /* eslint-disable no-new */

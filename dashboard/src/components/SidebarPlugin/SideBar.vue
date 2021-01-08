@@ -26,7 +26,7 @@
           </sidebar-item>
         </slot>
       </ul>
-      <ul class="nav logout-nav">
+      <ul class="nav logout-nav" v-if="show-logout">
           <li class="">
             <a href="#" @click="logout" class="">
                 <i class="tim-icons icon-button-power"></i>
@@ -85,6 +85,11 @@ export default {
       default: true,
       description:
         'Whether sidebar should autoclose on mobile when clicking an item'
+    },
+  },
+  data: function() {
+    return {
+      'show-logout': false
     }
   },
   computed: {

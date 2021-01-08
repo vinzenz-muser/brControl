@@ -3,7 +3,9 @@ import BaseDropdown from 'src/components/BaseDropdown.vue';
 import Card from 'src/components/Cards/Card.vue';
 import BaseButton from 'src/components/BaseButton.vue';
 import BaseCheckbox from 'src/components/Inputs/BaseCheckbox.vue';
-import Badge from 'src/components/Badge.vue'
+import Badge from 'src/components/Badge.vue';
+import SensorDetail from 'src/components/SensorDetail.vue'
+
 import { Input, InputNumber, Tooltip, Popover } from 'element-ui';
 import { ValidationProvider } from "vee-validate";
 import { ValidationObserver } from "vee-validate";

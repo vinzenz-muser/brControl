@@ -23,6 +23,7 @@ export default new Router({
       path: '/',
       name: '',
       component: DefaultLayout,
+      redirect: "/dashboard",
       children: [
         {
           path: '/dashboard',

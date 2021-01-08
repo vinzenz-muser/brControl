@@ -40,6 +40,9 @@ import SidebarPlugin from './SidebarPlugin';
 
 import AnimatedNumber from './AnimatedNumber';
 
+import SensorDetail from './SensorDetail';
+
+
 export {
   BaseCheckbox,
   IconCheckbox,
@@ -75,5 +78,6 @@ export {
   Collapse,
   CollapseItem,
   LoadingPanel,
-  AsyncWorldMap
+  AsyncWorldMap,
+  SensorDetail
 };

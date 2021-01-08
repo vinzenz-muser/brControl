@@ -15,7 +15,7 @@
         :aria-expanded="isOpen"
         data-toggle="dropdown"
       >
-        <slot name="title" :is-open="isOpen">
+        <slot name="title" :is-open="isOpen" v-if="!disableDropdown">
           <i :class="icon"></i> {{ title }}
         </slot>
       </component>
@@ -74,17 +74,30 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      disableDropdown: false
     };
+  },
+  mounted: function() {
+    let small_indicator = document.getElementById("small-navbar-indicator");
+    if (window.getComputedStyle(small_indicator).display != "none") {
+      this.isOpen = true
+      this.disableDropdown = true
+    }
+
   },
   methods: {
     toggleDropDown() {
-      this.isOpen = !this.isOpen;
-      this.$emit('change', this.isOpen);
+      if (!this.disableDropdown) {
+        this.isOpen = !this.isOpen;
+        this.$emit('change', this.isOpen);
+      }
     },
     closeDropDown() {
-      this.isOpen = false;
-      this.$emit('change', false);
+      if (!this.disableDropdown) {
+        this.isOpen = false;
+        this.$emit('change', false);
+      }
     }
   }
 };
