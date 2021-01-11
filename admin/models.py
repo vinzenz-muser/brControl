@@ -31,7 +31,7 @@ class Sensor(db.Model):
     suffix = db.Column(db.String(32), nullable=False, server_default="°C")
 
     def __repr__(self):
-        return '<Sensor {} from device {}>'.format(self.name, self.deviceId)    
+        return f'<Sensor {self.name} from device {self.deviceId}>'
 
 
 class Sensordata(db.Model):
@@ -41,7 +41,7 @@ class Sensordata(db.Model):
     value = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
-        return '<Sensordata {} from sensor {}>'.format(self.id, self.sensorId)    
+        return f'<Sensordata {self.id} from sensor {self.sensorId}>'
 
 
 class User(UserMixin, db.Model):
@@ -51,7 +51,7 @@ class User(UserMixin, db.Model):
     active = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)    
+        return '<User {self.username}>'
     
     def set_password(self, password):
         self.password = generate_password_hash(password)

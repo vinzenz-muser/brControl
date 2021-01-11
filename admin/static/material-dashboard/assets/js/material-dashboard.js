@@ -457,21 +457,20 @@ md = {
 
       nav_content = $navbar.html();
 
-      nav_content = '<ul class="nav navbar-nav nav-mobile-menu">' + nav_content + '</ul>';
+      nav_content = '<div class="dropdown-divider"></div><ul class="nav navbar-nav nav-mobile-menu">' + nav_content + '</ul>';
 
-      navbar_form = $('nav').find('.navbar-form').get(0).outerHTML;
+      // navbar_form = $('nav').find('.navbar-form').get(0).outerHTML;
 
       $sidebar_nav = $sidebar_wrapper.find(' > .nav');
 
       // insert the navbar form before the sidebar list
       $nav_content = $(nav_content);
-      $navbar_form = $(navbar_form);
-      $nav_content.insertBefore($sidebar_nav);
-      $navbar_form.insertBefore($nav_content);
+      // $navbar_form = $(navbar_form);
+      $nav_content.insertAfter($sidebar_nav);
+      // $navbar_form.insertBefore($nav_content);
 
       $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
         event.stopPropagation();
-
       });
 
       // simulate resize so all the charts/maps will be redrawn
