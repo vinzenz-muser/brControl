@@ -5,4 +5,5 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///./database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     HOST="0.0.0.0"
-    DEBUG=True
+    DEBUG=os.environ.get('DEBUG') or False
+    ENV=os.environ.get('FLASK_ENV') or "production"

@@ -10,13 +10,13 @@ from flask_socketio import SocketIO
 app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_object(Config)
-
 socketio = SocketIO(app, cors_allowed_origins="*", cookie=False)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 login = LoginManager(app)
+login.session_protection = "strong"
 login.login_view = 'auth.login'
 
 from admin import routes, models, forms
