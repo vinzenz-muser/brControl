@@ -41,7 +41,7 @@ def new_data(data):
             if current_sensor:
                 now = datetime.datetime.now()
                 found_data[current_sensor.id] = val
-                if (newest is None or newest.time < now - datetime.timedelta(seconds=60)):
+                if (newest is None or newest.time < now - datetime.timedelta(seconds=5)):
                     add_sensor = Sensordata(sensorId = current_sensor.id, time = now, value = val)
                     db.session.add(add_sensor)
                     db.session.commit()

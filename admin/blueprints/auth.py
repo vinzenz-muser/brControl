@@ -9,7 +9,6 @@ from flask_login import current_user, login_user, logout_user, confirm_login
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.urls import url_parse
 import datetime
-from cryptography.fernet import Fernet
 import json
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
