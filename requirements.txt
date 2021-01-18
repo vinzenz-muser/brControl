@@ -6,6 +6,6 @@ flask-sqlalchemy
 flask-wtf
 flask-migrate
 flask-login
-flask_socketio
+flask_socketio==4.3.2 
 email_validator
 
