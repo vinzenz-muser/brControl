@@ -3,6 +3,8 @@ dist
 node_modules
 */static/dash
 *.pyc
+*.sql
+
 .DS_Store
 !.keep
 env
