@@ -1,4 +1,5 @@
 flask
+blinker
 waitress
 PyMySQL
 flask-sqlalchemy

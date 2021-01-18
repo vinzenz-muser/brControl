@@ -86,6 +86,13 @@ export default {
       description:
         'Whether sidebar should autoclose on mobile when clicking an item'
     },
+
+    show: {
+      type: Boolean,
+      default: true,
+      description:
+        'Whether sidebar should autoclose on mobile when clicking an item'
+    },
   },
   data: function() {
     return {

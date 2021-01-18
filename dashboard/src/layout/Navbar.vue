@@ -26,7 +26,7 @@
         </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
-          <a href="/logout" class="nav-item dropdown-item">Log out</a>
+          <a href="/auth/logout" class="nav-item dropdown-item">Log out</a>
         </li>
       </base-dropdown>
     </ul>

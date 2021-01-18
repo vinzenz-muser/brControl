@@ -50,8 +50,6 @@ export default new Vuex.Store({
             }
         },
         "SOCKET_login_successful"(state, data) {
-            localStorage.email = data["email"]
-            localStorage.token = data["token"]
             localStorage.name = data["name"]
             this._vm.$socket.emit('update_sensors')
             if (router.history.current.path == "/login") {
@@ -59,26 +57,12 @@ export default new Vuex.Store({
             }
         },
         "SOCKET_login_failed"(state, data) {
-            alert("Login failed")
-        },
-        "SOCKET_token_login_failed"(state, data) {
-            console.log("Token Login failed")
+            let location = (window.location + "").split("/")
+            let url = location[0] + "//" + location[2] + "/auth/login?next=" + window.location.pathname + window.location.hash
+            window.location.replace(url)
         },
         "SOCKET_connect"(state) {
-            if (localStorage.token != "") {
-                this._vm.$socket.emit('login_token', { "token": localStorage.token })
-            } else {
-                router.push({ name: 'login' })
-            }
-        },
-        "SOCKET_logged_out"(state) {
-            localStorage.email = ""
-            localStorage.token = ""
-            localStorage.name = ""
-            router.push({ name: 'login' })
-        },
-        "activate_sensor"(state, indices) {
-            state.activeDevices[indices[0]]["activeSensor"] = indices[1]
+            console.log("Successfully logged in!")
         }
     },
     actions: {},

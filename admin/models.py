@@ -1,8 +1,9 @@
 import datetime
-from admin import db, login
+from admin import db, login, app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
+from cryptography.fernet import Fernet
 
 
 class Device(db.Model):
@@ -14,7 +15,7 @@ class Device(db.Model):
     type = db.Column(db.String(64), nullable=False)
 
     def __repr__(self):
-        return f'<User {self.id} Type {self.type}>'
+        return f'<Device {self.id} Type {self.type}>'
 
     def set_api_key(self):
         token = secrets.token_urlsafe(32)
@@ -33,6 +34,12 @@ class Sensor(db.Model):
     def __repr__(self):
         return f'<Sensor {self.name} from device {self.deviceId}>'
 
+    def to_dict(self):
+        ans = {
+            key: value for key, value in self.__dict__.items() if key in self.__table__.columns.keys()
+        }
+        
+        return ans
 
 class Sensordata(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,13 +58,14 @@ class User(UserMixin, db.Model):
     active = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<User {self.username}>'
+        return f'<User {self.username}>'
     
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
 
 @login.user_loader
 def load_user(id):

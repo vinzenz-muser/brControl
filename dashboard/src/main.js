@@ -31,13 +31,11 @@ Vue.use(DashboardPlugin);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 
-var url = window.location.href
-var main_parts = url.split("/")
-var main_url = main_parts[0]+"//hub-"+main_parts[2]+"/dashboard"
+let url = window.location.protocol + '//' + window.location.host + '/dashboard'
 
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: io(main_url),
+  connection: io(url),
   vuex: {
     store,
     actionPrefix: "SOCKET_",
