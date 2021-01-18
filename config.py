@@ -7,3 +7,4 @@ class Config(object):
     HOST="0.0.0.0"
     DEBUG=os.environ.get('DEBUG') or False
     ENV=os.environ.get('FLASK_ENV') or "production"
+    SESSION_COOKIE_SECURE=os.environ.get('FLASK_SESSION_COOKIE_SECURE') or True
