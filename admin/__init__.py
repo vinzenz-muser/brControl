@@ -6,6 +6,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, user_logged_in, user_logged_out, user_login_confirmed
 from flask_socketio import SocketIO
+import flask_socketio
+import engineio          
+import socketio
+
+print("flask-socketio version: ", flask_socketio.__version__)
+print("python_engineio version: ", engineio.__version__)
+print("python_socketio version: ", socketio.__version__)
 
 app = Flask(__name__, instance_relative_config=True)
 
