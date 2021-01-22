@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('socket', __name__)
 
-from admin.blueprints.socketroutes import dash, device
+from admin.blueprints.websocket import dash, device

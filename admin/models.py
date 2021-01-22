@@ -11,7 +11,7 @@ class Device(db.Model):
     name = db.Column(db.String(64), nullable=False)
     apiKey = db.Column(db.String(64), nullable=False, unique=True)
     sensors = db.relationship('Sensor', backref='device', lazy='dynamic', cascade="all, delete-orphan")
-    type = db.Column(db.String(64), nullable=False)
+    type = db.Column(db.String(64), nullable=False, default="default")
 
     def __repr__(self):
         return f'<Device {self.id} Type {self.type}>'
@@ -29,6 +29,7 @@ class Sensor(db.Model):
     target = db.Column(db.Float, nullable=True)
     accuracy = db.Column(db.Float, nullable=True)
     suffix = db.Column(db.String(32), nullable=False, server_default="°C")
+    type = db.Column(db.String(32), nullable=False, server_default="reader")
 
     def __repr__(self):
         return f'<Sensor {self.name} from device {self.deviceId}>'

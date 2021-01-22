@@ -1,9 +1,15 @@
 <template>
     <div class="sensor">
         <card>
-            <h3 class="card-title"> {{ sensor.name }} </h3>
-            <h5 class="card-subtitle">ID: {{ sensor.id }}</h5>
-            <div class="sensor-info mt-4">
+            <span slot="header">
+                <h3 class="card-title"> {{ sensor.name }} </h3>
+                <h5 class="card-subtitle">ID: {{ sensor.id }}</h5>
+                <base-button class="position-absolute abs-right-button" size="sm" icon type="primary" @click="modalActive = true" :disabled="!active">
+                    <i class="tim-icons icon-pencil"></i>
+                </base-button>
+            </span>
+
+            <div class="sensor-info">
                 <p v-if="!(sensor.target === null)">Target Value: {{ sensor.target }}</p>
                 <p v-else>Target Value: No Data</p>
                 <p v-if="!(sensor.accuracy === null)">Accuracy: {{ sensor.accuracy }}</p>
@@ -13,9 +19,6 @@
                 <p v-if="sensor.lastTime">Last Updated: {{ sensor.lastTime}} </p>
                 <p v-else>Last Updated: No Data</p>
             </div>
-            <base-button size="sm" icon type="primary" @click="modalActive = true" :disabled="!active">
-                <i class="tim-icons icon-pencil"></i>
-            </base-button>
         </card>
         <modal :show="modalActive" body-classes="p-0">
             <card type="secondary" header-classes="bg-white pb-5" body-classes="px-lg-5 py-lg-5" class="border-0 mb-0">

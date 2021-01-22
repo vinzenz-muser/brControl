@@ -1,11 +1,11 @@
 <template>
     <div>    
         <div class="row">
-            <div class="col-lg-10">
+            <div class="col-8">
                 <h1>Control Device Details</h1>
             </div>
-            <div class="col-lg-2">
-                <base-button class="float-right" size="sm" type="primary" v-on:click="$router.go(-1)">Go Back</base-button>
+            <div class="col-4">
+                <base-button size="sm" class="float-right" type="primary" v-on:click="$router.go(-1)">Go Back</base-button>
             </div>
         </div>
         <div class="row">
@@ -61,7 +61,7 @@
         <base-alert type="danger" v-if="!activeDevice.active">
         <strong>Attention!</strong> This is device is not connected and therefore you will not be able to change the target values and accuracies of the controllers.        </base-alert>
         <div class="row">
-            <div class="col mb-3" v-for="(sensor, index) in activeDevice.sensors" v-bind:key="index">
+            <div class="col-lg-6 col-sm-12" v-for="(sensor, index) in activeDevice.sensors" v-bind:key="index">
                 <sensor-detail :sensor="sensor" :deviceId="activeDevice.id" :active="activeDevice.active"></sensor-detail>
             </div>
         </div>

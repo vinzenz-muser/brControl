@@ -4,13 +4,17 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for, make_response)
 from admin.models import User, Sensor, Device
 
+from admin import app
 from admin import socketio
 
 # Users
 @socketio.on('connect', namespace='/dashboard')
 def dash_connect():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated or app.config["ENV"] == "development":
         join_room("authorized")
+        if app.config["ENV"] == "development":
+            current_user.username = "Anonymous"
+            
         ans = {
             "session": request.sid,
             "name": current_user.username

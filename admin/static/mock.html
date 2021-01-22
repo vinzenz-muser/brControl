@@ -8,12 +8,16 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             // Connect to the Socket.IO server.
+            // api_key: aJ2dKojAVOEoTbS-2rQW2wT-RrAqrJ4dXL_fE0gaJeU
+            // hub_url:  https://hub-brauerei.brauradau.ch
             // The connection URL has the following format, relative to the current page:
             //     http[s]://<domain>:<port>[/<namespace>]
             //var socket = io("https://hub-brauerei.brauradau.ch/sensor?api_key=uQLm9kttaOR4XDDUTQasq1BV4kPcSuBMwsWd1eMIob4");
-            var socket = io("http://localhost:42160/sensor", {
+            let url = window.location.protocol + '//' + window.location.host + '/sensor'
+
+            let socket = io(url, {
                     query: {
-                        api_key: "uQLm9kttaOR4XDDUTQasq1BV4kPcSuBMwsWd1eMIob4"
+                        api_key: "aJ2dKojAVOEoTbS-2rQW2wT-RrAqrJ4dXL_fE0gaJeU"
                     }
                 }
             );
@@ -24,19 +28,20 @@
             socket.on('connect', function() {
                 console.log("connected")
             });
+
             let i = 0;
             window.setInterval(function() {
                 let data = {
-                    "Data": {
+                    "data": {
+                        5: 100*Math.random(),
                         1: 100*Math.random(),
-                        16: 100*Math.random(),
                         17: 100*Math.random(),
                     }
                 }
                 i = i + 1;
-                console.log(i)
+                console.log(data)
                 socket.emit('new_data', data);
-            }, 1100);
+            }, 1000);
 
             // Handlers for the different forms in the page.
             // These accept data from the user and send it to the server in a
@@ -46,7 +51,5 @@
 </head>
 <body>
     <h1>Flask-SocketIO Test</h1>
-    <p>Async mode is: <b>{{ async_mode }}</b></p>
-    <p>Average ping/pong latency: <b><span id="ping-pong"></span>ms</b></p>
 </body>
 </html>
