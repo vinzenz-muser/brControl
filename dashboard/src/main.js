@@ -32,8 +32,7 @@ Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 
 let url = window.location.protocol + '//' + window.location.host + '/dashboard'
-url = "http://localhost:5000/dashboard"
-console.log(url)
+
 Vue.use(new VueSocketIO({
   debug: false,
   connection: io(url),
