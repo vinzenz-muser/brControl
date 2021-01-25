@@ -27,7 +27,7 @@ login.session_protection = "strong"
 login.login_view = 'auth.login'
 
 from admin import routes, models, forms
-from admin.commands import usercommands, devicecommands
+from admin.commands import usercommands, devicecommands, dbcommands
 from admin.blueprints import users, devices, auth, socket
 
 app.register_blueprint(auth.bp)

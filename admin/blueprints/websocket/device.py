@@ -12,7 +12,6 @@ from admin import socketio, db
 def sensor_connect():
     if "api_key" not in request.args:
         raise ConnectionRefusedError('Please provide an API-Key')
-
     api_key = request.args.get("api_key")
     device = Device.query.filter(Device.apiKey == api_key).first()
 
@@ -39,7 +38,7 @@ def new_data(data):
         for key, val in data["data"].items():
             current_sensor = Sensor.query.filter(Sensor.id == key).filter(Sensor.deviceId == device.id).first()
             if current_sensor:
-                now = datetime.datetime.now()
+                now = datetime.datetime.utcnow()
                 found_data[current_sensor.id] = val
                 if (newest is None or newest.time < now - datetime.timedelta(seconds=5)):
                     add_sensor = Sensordata(sensorId = current_sensor.id, time = now, value = val)
@@ -57,20 +56,20 @@ def new_data(data):
 @socketio.on('updated_targets', namespace='/sensor')
 def updated_targets(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
-
     if device:
-        sensor = device.sensors.filter(Sensor.id == data['sensor_id']).first()
+        for current_data in data:
+            sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
 
-    if sensor:
-        sensor.accuracy = data['accuracy']
-        sensor.target = data['value']
-        ans = sensor.to_dict()
+            if sensor:
+                sensor.accuracy = current_data['accuracy']
+                sensor.target = current_data['value']
+                ans = sensor.to_dict()
 
-        db.session.commit()
+                db.session.commit()
 
-        emit(
-            "update_sensor_values",
-            ans,
-            namespace="/dashboard",
-            room="authorized"
-        )
+                emit(
+                    "update_sensor_values",
+                    ans,
+                    namespace="/dashboard",
+                    room="authorized"
+                )

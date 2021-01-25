@@ -18,7 +18,6 @@
                             <th>Name</th>
                             <th>Location</th>
                             <th>API-Key</th>
-                            <th>Device-Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,8 +26,7 @@
                             <td class="text-center">{{ device.id }}</td>
                             <td>{{ device.name }}</td>
                             <td>{{ device.location }}</td>
-                            <td>{{ device.apiKey[:10] }}...</td>
-                            <td>{{ device.type }}</td>
+                            <td>{{ device.apiKey[:15] }}...</td>
                             <td class="td-actions text-right">
                                 <a href="{{ url_for('devices.detail', id=device.id) }}">
                                     <button type="button" rel="tooltip" class="btn btn-info">
@@ -88,13 +86,6 @@
                             <div class="form-group">
                                 <label class="bmd-label-floating">{{ form.location.label }}</label>
                                 {{ form.location(class="form-control") }}
-                                {% for error in form.location.errors %}
-                                <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="form-group">
-                                <label class="bmd-label-floating">{{ form.devicetype.label }}</label>
-                                {{ form.devicetype(class="form-control") }}
                                 {% for error in form.location.errors %}
                                 <span class="text-danger">{{ error }}</span>
                                 {% endfor %}

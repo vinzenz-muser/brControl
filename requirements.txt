@@ -8,4 +8,6 @@ flask-migrate
 flask-login
 flask_socketio 
 email_validator
+pandas
+numpy
 

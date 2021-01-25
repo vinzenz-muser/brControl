@@ -16,7 +16,7 @@ def showall():
     devices = Device.query.all()
 
     if form.validate_on_submit():
-        device = Device(location=form.location.data, name=form.name.data, type=form.devicetype.data)
+        device = Device(location=form.location.data, name=form.name.data)
         device.set_api_key()
         db.session.add(device)
         db.session.commit()
@@ -36,12 +36,9 @@ def detail(id):
     if form.validate_on_submit():
         device.location = form.location.data
         device.name = form.name.data
-        device.type = form.devicetype.data
         db.session.commit()
         flash('Device has been updated.')
         return redirect(url_for('devices.detail', id=id))
-    else:
-        form.devicetype.data = device.type
 
     return render_template('admin/devices/detail.html', title='Device detail', device=device, sensors=sensors, form=form, sensorform=AddSensorForm())
 
@@ -83,9 +80,10 @@ def deletesensor(id, sensorid):
 def modifysensor(id, sensorid):
     sensor = Sensor.query.filter_by(id=sensorid).first()   
     form = AddSensorForm()
-
+    
     if form.validate_on_submit():
         sensor.name=form.name.data
+        sensor.type=form.type.data
         db.session.commit()
         flash('Sensor has been modified.')
         return redirect(url_for('devices.detail', id=id))

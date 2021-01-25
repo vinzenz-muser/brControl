@@ -33,14 +33,6 @@
                         </h4>
                     </div>
                 </div>
-                <div class="col-lg-5 col-sm-12"> 
-                    <div>
-                        Type: 
-                        <h4>
-                            {{ device.type }}
-                        </h4>
-                    </div>
-                </div>
             </div>
             <div class="row mt-4">
                 <div class="col-lg-5 col-sm-12"> 
@@ -88,6 +80,7 @@
                             <tr>
                                 <th class="text-center">#</th>
                                 <th>Name</th>
+                                <th>Sensor-Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +88,7 @@
                             <tr>
                                 <td class="text-center">{{ sensor.id }}</td>
                                 <td>{{ sensor.name}}</td>
+                                <td>{{ sensor.type}}</td>
 
                                 <td class="td-actions text-right">
                                     <button type="button" data-toggle="modal" data-target="#modifySensor{{ sensor.id }}" rel="tooltip" class="btn btn-info btn-lg" >
@@ -130,7 +124,7 @@
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h3 class="modal-title" id="modifySensor{{ sensor.id }}Label">Modifry the sensor #{{ sensor.id }}</h3>
+                                        <h3 class="modal-title" id="modifySensor{{ sensor.id }}Label">Edit sensor #{{ sensor.id }}</h3>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -142,8 +136,19 @@
                                                 <div class="col">
                                                     <div class="form-group">
                                                         <label class="bmd-label-floating">{{ sensorform.name.label }}</label>
-                                                        {{ sensorform.name(class="form-control") }}
+                                                        {{ sensorform.name(class="form-control", value=sensor.name) }}
                                                         {% for error in sensorform.name.errors %}
+                                                        <span class="text-danger">{{ error }}</span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-4 mb-4">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label class="bmd-label-floating">{{ sensorform.type.label }}</label>
+                                                        {{ sensorform.type(class="form-control") }}
+                                                        {% for error in sensorform.type.errors %}
                                                         <span class="text-danger">{{ error }}</span>
                                                         {% endfor %}
                                                     </div>
@@ -197,7 +202,7 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="refreshModalLabel">Edit base information</h3>
+                <h3 class="modal-title" id="refreshModalLabel">Edit device information</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -222,17 +227,6 @@
                                 <label class="bmd-label-floating">{{ form.location.label }}</label>
                                 {{ form.location(class="form-control") }}
                                 {% for error in form.location.errors %}
-                                <span class="text-danger">{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4 mb-4">
-                        <div class="col">
-                            <div class="form-group">
-                                <label class="bmd-label-floating">{{ form.devicetype.label }}</label>
-                                {{ form.devicetype(class="form-control") }}
-                                {% for error in form.devicetype.errors %}
                                 <span class="text-danger">{{ error }}</span>
                                 {% endfor %}
                             </div>
@@ -264,6 +258,17 @@
                                 <label class="bmd-label-floating">{{ sensorform.name.label }}</label>
                                 {{ sensorform.name(class="form-control") }}
                                 {% for error in sensorform.name.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4 mb-4">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">{{ sensorform.type.label }}</label>
+                                {{ sensorform.type(class="form-control") }}
+                                {% for error in sensorform.type.errors %}
                                 <span class="text-danger">{{ error }}</span>
                                 {% endfor %}
                             </div>

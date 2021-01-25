@@ -13,19 +13,20 @@ export default new Vuex.Store({
     },
     mutations: {
         "SOCKET_new_data"(state, data) {
-            Vue.set(state.devices[data.deviceid], "active", true)
             let sensorid = 0;
             let date = new Date();
             let minutes =  date.getMinutes()
             let seconds =  date.getSeconds()
             let hours = date.getHours()
             let dateString = (hours < 10 ? '0' : '') + hours  + ":" + (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds
-
-            for (sensorid in data.data) {
-                for (let sensorindex in state.devices[data.deviceid].sensors) {
-                    if (state.devices[data.deviceid].sensors[sensorindex].id === parseInt(sensorid)) {
-                        Vue.set(state.devices[data.deviceid].sensors[sensorindex], "lastValue", data.data[sensorid])
-                        Vue.set(state.devices[data.deviceid].sensors[sensorindex], "lastTime", dateString)
+            if (data.deviceid in state.devices) {
+                Vue.set(state.devices[data.deviceid], "active", true)
+                for (sensorid in data.data) {
+                    for (let sensorindex in state.devices[data.deviceid].sensors) {
+                        if (state.devices[data.deviceid].sensors[sensorindex].id === parseInt(sensorid)) {
+                            Vue.set(state.devices[data.deviceid].sensors[sensorindex], "lastValue", data.data[sensorid])
+                            Vue.set(state.devices[data.deviceid].sensors[sensorindex], "lastTime", dateString)
+                        }
                     }
                 }
             }

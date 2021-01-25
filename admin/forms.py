@@ -43,12 +43,12 @@ class EditUserForm(FlaskForm):
         return True
 
 class AddDeviceform(FlaskForm):
-    location = StringField('Location')
-    name = StringField('Name')
-    devicetype = SelectField(u'Device Type', choices=[('sensors', 'Sensors'), ('control', 'Temperature control')])
+    location = StringField('Location', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Save User')
 
 class AddSensorForm(FlaskForm):
     deviceid = IntegerField('Device Id')
     name = StringField('Name', validators=[DataRequired()])
+    type = SelectField(u'Device Type', choices=[('', 'Please select an option'), ('reader', 'Reader'), ('controller', 'Controller')], default=None, validators=[DataRequired()])
     submit = SubmitField('Save Sensor')
