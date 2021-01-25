@@ -24,6 +24,11 @@ class Device(db.Model):
         self.apiKey = token
 
 
+class Cleanup(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lastCleanup = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceId = db.Column(db.Integer, db.ForeignKey('device.id'), nullable=False)

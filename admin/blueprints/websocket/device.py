@@ -1,6 +1,7 @@
 from flask_login import current_user
 from flask import request, session
-from admin.models import User, Sensor, Device, Sensordata
+from admin.models import User, Sensor, Device, Sensordata, Cleanup
+from admin.commands.dbcommands import clean_data
 from flask_socketio import emit, join_room, leave_room
 import datetime
 
@@ -33,23 +34,33 @@ def new_data(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
     newest = Sensordata.query.order_by(Sensordata.time.desc()).first()
     found_data = dict()
+    now = datetime.datetime.utcnow()
+    save_time = datetime.timedelta(seconds=5)
+
+    cleanup_time = datetime.timedelta(days=1)
+    last_cleanup = Cleanup.query.order_by(Cleanup.lastCleanup.desc()).first()
+
+    if not last_cleanup or last_cleanup.lastCleanup < now - cleanup_time:
+        clean_data()
+        cleanup = Cleanup()
+        db.session.add(cleanup)
 
     if device:
         for key, val in data["data"].items():
             current_sensor = Sensor.query.filter(Sensor.id == key).filter(Sensor.deviceId == device.id).first()
             if current_sensor:
-                now = datetime.datetime.utcnow()
                 found_data[current_sensor.id] = val
-                if (newest is None or newest.time < now - datetime.timedelta(seconds=5)):
+                if (newest is None or newest.time < now - save_time):
                     add_sensor = Sensordata(sensorId = current_sensor.id, time = now, value = val)
                     db.session.add(add_sensor)
-                    db.session.commit()
+
         ans = {
             "data": found_data,
             "deviceid": device.id   
         }
         emit('new_data', ans, namespace='/dashboard', room="authorized")
     
+    db.session.commit()    
     db.session.remove()
    
 

@@ -5,8 +5,6 @@ import secrets
 import click
 import datetime
 
-
-@app.cli.command("clean-data")
 def clean_data():
     keep_all_for = datetime.timedelta(days=1)
     periodicity = datetime.timedelta(minutes=5)
@@ -25,3 +23,7 @@ def clean_data():
             last_saved = data.time
 
     db.session.commit()
+
+@app.cli.command("clean-data")
+def clean_wrap():
+    clean_data()
