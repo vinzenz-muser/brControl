@@ -28,10 +28,13 @@ def sensor_disconnect():
 
     if device:
         emit('device_disconnect', {"id": device.id}, namespace='/dashboard', room="authorized")
+    
+    db.session.remove()
 
 @socketio.on('new_data', namespace='/sensor')
 def new_data(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
+
     newest = Sensordata.query.order_by(Sensordata.time.desc()).first()
     found_data = dict()
     now = datetime.datetime.utcnow()
@@ -44,6 +47,7 @@ def new_data(data):
         clean_data()
         cleanup = Cleanup()
         db.session.add(cleanup)
+        db.session.commit() 
 
     if device:
         for key, val in data["data"].items():
@@ -53,14 +57,14 @@ def new_data(data):
                 if (newest is None or newest.time < now - save_time):
                     add_sensor = Sensordata(sensorId = current_sensor.id, time = now, value = val)
                     db.session.add(add_sensor)
-
+                    db.session.commit()    
         ans = {
             "data": found_data,
             "deviceid": device.id   
         }
+
         emit('new_data', ans, namespace='/dashboard', room="authorized")
     
-    db.session.commit()    
     db.session.remove()
    
 

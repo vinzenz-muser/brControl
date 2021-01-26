@@ -8,10 +8,11 @@ import datetime
 def clean_data():
     keep_all_for = datetime.timedelta(days=1)
     periodicity = datetime.timedelta(minutes=5)
+    max_time = datetime.timedelta(weeks=1)
     now = datetime.datetime.utcnow()
     start = now - keep_all_for
 
-    all_data = Sensordata.query.filter(Sensordata.time < start).order_by(Sensordata.time.desc()).all()
+    all_data = Sensordata.query.filter((Sensordata.time < start) & (Sensordata.time > now + max_time)).order_by(Sensordata.time.desc()).all()
     last_saved = None
     for data in all_data:
         if not last_saved:
@@ -23,6 +24,7 @@ def clean_data():
             last_saved = data.time
 
     db.session.commit()
+    return
 
 @app.cli.command("clean-data")
 def clean_wrap():
