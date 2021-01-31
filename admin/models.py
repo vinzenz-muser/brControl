@@ -93,7 +93,7 @@ class Sensor(db.Model):
             current = response[1]
             ans["target"] = current["row"]["columns"][0]
             ans["accuracy"] = current["row"]["columns"][1]
-        except IndexError:
+        except (IndexError, KeyError):
             print("No target / accuracy")
 
         return ans
