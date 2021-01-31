@@ -8,6 +8,7 @@ import requests
 import json
 import numpy as np
 from sqlalchemy.sql import func
+import time
 
 
 class Device(db.Model):
@@ -60,25 +61,25 @@ class Sensor(db.Model):
         }
         plot_data = dict()
         for interval, conf in request_strings.items():
-
             plot_data[interval] = {
                 "values": [],
                 "timestamps": []
             }
-
 
             ksql_request = {
                 "ksql": f"SELECT WINDOWSTART, WINDOWEND, AVERAGE FROM {conf['db']} WHERE ID='{req_id}' AND WINDOWSTART > {conf['start']};"
             }
 
             response = requests.post(url, data = json.dumps(ksql_request)).json()
-            
-            for row in response[1:]:
-                plot_data[interval]["values"].append(row['row']['columns'][2])
+            try:
+                for row in response[1:]:
+                    plot_data[interval]["values"].append(row['row']['columns'][2])
 
-                timestamp = row['row']['columns'][1] / 1000
-                time = datetime.datetime.fromtimestamp(timestamp).strftime("%H:%M")
-                plot_data[interval]["timestamps"].append(time)
+                    timestamp = row['row']['columns'][1] / 1000
+                    timestring = datetime.datetime.fromtimestamp(timestamp).strftime("%H:%M")
+                    plot_data[interval]["timestamps"].append(timestring)
+            except TypeError:
+                print("No cool response")
 
         ans["plot_data"] = plot_data
 
@@ -87,10 +88,14 @@ class Sensor(db.Model):
         }
 
         response = requests.post(url, data = json.dumps(ksql_request)).json()
-        if len(response) > 1:
+
+        try:
             current = response[1]
             ans["target"] = current["row"]["columns"][0]
             ans["accuracy"] = current["row"]["columns"][1]
+        except IndexError:
+            print("No target / accuracy")
+
         return ans
 
 class User(UserMixin, db.Model):

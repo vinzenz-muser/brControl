@@ -9,7 +9,7 @@ class Config(object):
     ENV=os.environ.get('FLASK_ENV') or "production"
     SESSION_COOKIE_SECURE=os.environ.get('FLASK_SESSION_COOKIE_SECURE') or True
     USER="brauerei"
-    CONFLUENT_BOOSTRAP_SERVERS='pkc-lq8gm.westeurope.azure.confluent.cloud:9092'
-    CONFLUENT_USERNAME='L4EKSUL5FZGMMZIN'
-    CONFLUENT_PASSWORD='E27Rc0cXduP1TO1a7jRBkIVB+2HgMHj9B0NqSU4wBFbSBGTxUInUVisQH8Vm1uxQ'
-    KSQL_URL='http://localhost:8088'
+    CONFLUENT_BOOSTRAP_SERVERS=os.environ.get('CONFLUENT_BOOSTRAP_SERVERS')
+    CONFLUENT_USERNAME=os.environ.get('CONFLUENT_USERNAME')
+    CONFLUENT_PASSWORD=os.environ.get('CONFLUENT_PASSWORD')
+    KSQL_URL=os.environ.get('KSQL_URL')
