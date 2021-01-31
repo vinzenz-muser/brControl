@@ -15,19 +15,19 @@
             <div class="col-sm-6 d-flex d-sm-block">
               <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
                 <label
-                  v-for="(sensor, sensorIndex) in device.sensors"
+                  v-for="(sensor, sensorIndex, i) in device.sensors"
                   :key="sensor.name"
                   class="btn btn-sm btn-primary btn-simple"
-                  :class="{ active: device.activeSensor === sensorIndex }"
+                  :class="{ active: device.activeSensor === sensor.id }"
                 >
                     <input
                       type="radio"
-                      @click="activateSensor(deviceIndex, sensorIndex)"
+                      @click="activateSensor(deviceIndex, sensor.id)"
                       name="options"
                       autocomplete="off"
-                      :checked="device.activeSensor === sensorIndex"
+                      :checked="device.activeSensor === sensor.id"
                     />
-                    <span class="d-none d-sm-block">{{ sensorIndex + 1 | roman }}</span>
+                    <span class="d-none d-sm-block">{{ i + 1 | roman }}</span>
                 </label>
               </div>
             </div>
@@ -54,8 +54,9 @@
 
         for (let device in this.devices) {
           if (this.devices[device].active) {
-            Vue.set(ans, device,this.devices[device])
-            Vue.set(ans[device], "activeSensor", 0)
+            let firstSensorId = Object.keys(this.devices[device]["sensors"])[0]
+            Vue.set(ans, device, this.devices[device])
+            Vue.set(ans[device], "activeSensor", parseInt(firstSensorId))
           }
         }
 
@@ -63,8 +64,8 @@
       }
     },
     methods: {
-      activateSensor(deviceId, sensorIndex) {
-        Vue.set(this.activeDevices[deviceId], "activeSensor", sensorIndex)
+      activateSensor(deviceId, sensorId) {
+        Vue.set(this.activeDevices[deviceId], "activeSensor", sensorId)
       }
     },
     filters: {

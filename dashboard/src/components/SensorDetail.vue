@@ -112,7 +112,7 @@
         props: ["sensor", "deviceId", "active"],
         data () {
             return {
-                periods: ["1m", "1h", "1d", "1w", "4w", "max"],
+                periods: ["1m", "1h", "1d"],
                 modalActive: false,
                 target: this.sensor.target,
                 accuracy: this.sensor.accuracy,
@@ -204,7 +204,7 @@
         },
         methods: {
             onSubmit () {
-                this.$socket.emit('update_controller', {
+                this.$socket.emit('set_targets', {
                     "device_id": this.deviceId,
                     "sensor_id": this.sensor.id,
                     "value": this.target,
