@@ -79,6 +79,8 @@ def new_data(data):
 
                 except requests.exceptions.ConnectionError:
                     print("Failed to connect to KSQL")
+                except TypeError:
+                    print("Response did not contain values")
 
                 socket_response["1m"] = ans
 
