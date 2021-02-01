@@ -48,15 +48,23 @@ class Sensor(db.Model):
         request_strings = {
             "1m": {
                 "db": "AVERAGES_1_MINUTE",
-                "start": 1000*int((now - datetime.timedelta(minutes=60)).timestamp())
+                "start": 1000*int((now - datetime.timedelta(minutes=60)).timestamp()),
+                "format": "%H:%M"
+            },
+            "5m": {
+                "db": "AVERAGES_5_MINUTE",
+                "start": 1000*int((now - datetime.timedelta(minutes=300)).timestamp()),
+                "format": "%H:%M"
             },
             "1h": {
                 "db": "AVERAGES_1_HOUR",
-                "start": 1000*int((now - datetime.timedelta(hours=120)).timestamp())
+                "start": 1000*int((now - datetime.timedelta(hours=60)).timestamp()),
+                "format": "%H:%M %d.%m.%Y"
             },
             "1d": {
                 "db": "AVERAGES_1_DAY",
-                "start": 1000*int((now - datetime.timedelta(days=60)).timestamp())
+                "start": 1000*int((now - datetime.timedelta(days=60)).timestamp()),
+                "format": "%d.%m.%Y"
             },
         }
         plot_data = dict()
@@ -76,7 +84,7 @@ class Sensor(db.Model):
                     plot_data[interval]["values"].append(row['row']['columns'][2])
 
                     timestamp = row['row']['columns'][1] / 1000
-                    timestring = datetime.datetime.fromtimestamp(timestamp).strftime("%H:%M")
+                    timestring = datetime.datetime.fromtimestamp(timestamp).strftime(conf["format"])
                     plot_data[interval]["timestamps"].append(timestring)
             except TypeError:
                 print("No cool response")

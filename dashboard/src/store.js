@@ -39,7 +39,6 @@ export default new Vuex.Store({
             state.devices = data
         },
         "SOCKET_update_sensor"(state, data) {
-            console.log(data)
             let sensor_id = data['id'];
             let device_id = data['deviceId'];
             Vue.set(state.devices[device_id].sensors[sensor_id], "target", data["target"])

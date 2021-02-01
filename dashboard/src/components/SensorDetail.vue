@@ -25,7 +25,7 @@
             </div>
             <div class="chart-container">
                 <div class="text-right mb-2">
-                    <base-button size="sm" type="secondary" v-for="period in periods" @click="updatePlot(period)">{{ period }}</base-button>
+                    <base-button v-bind:disabled="period==activeData" size="sm" type="secondary" v-for="period in periods" @click="updatePlot(period)">{{ period }}</base-button>
                 </div>
                 <line-chart style="height: 100%"
                     :chart-data="purpleLineChart.chartData"
@@ -112,7 +112,7 @@
         props: ["sensor", "deviceId", "active"],
         data () {
             return {
-                periods: ["1m", "1h", "1d"],
+                periods: ["1m", "5m", "1h", "1d"],
                 modalActive: false,
                 target: this.sensor.target,
                 accuracy: this.sensor.accuracy,
