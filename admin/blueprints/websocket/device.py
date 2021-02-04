@@ -1,15 +1,16 @@
 from flask_login import current_user
 from flask import request, session
-from admin.models import User, Sensor, Device
+from admin.models import User, Sensor, Device, Value
 import requests
 from flask_socketio import emit, join_room, leave_room
 import datetime
 import json
-from admin import socketio, db, producer, app
+from admin import socketio, db, app, data_handler
 
 # Sensors 
 @socketio.on('connect', namespace='/sensor')
 def sensor_connect():
+    allowed = False
     if "api_key" not in request.args:
         raise ConnectionRefusedError('Please provide an API-Key')
     api_key = request.args.get("api_key")
@@ -17,9 +18,10 @@ def sensor_connect():
 
     if device:
         join_room("device_" + str(device.id))
-        return True
+        allowed = True
 
-    return False
+    db.session.remove()         
+    return allowed
 
 @socketio.on('disconnect', namespace='/sensor')
 def sensor_disconnect():
@@ -38,54 +40,14 @@ def new_data(data):
         for key, val in data["data"].items():
             current_sensor = Sensor.query.filter(Sensor.id == key).filter(Sensor.deviceId == device.id).first()
             if current_sensor:
-                event = {
-                    "device_id": device.id,
-                    "sensor_id": current_sensor.id,
-                    "value": val,
-                    "user": app.config["USER"]
-                }
-
-                producer.produce("sensor-values", json.dumps(event).encode('utf-8'))
-                
                 socket_response = {
                     "device_id": device.id,
                     "sensor_id": current_sensor.id,
                     "value": val,
                 }
 
-                ans = {
-                    "values": [],
-                    "times": []
-                }
-
-                try:
-                    req_id = f"{app.config['USER']}_{device.id}_{current_sensor.id}"
-                    now = datetime.datetime.now()
-                    start = 1000*int((now - datetime.timedelta(minutes=120)).timestamp())
-
-                    url = app.config['KSQL_URL']+"/query"
-
-                    ksql_request = {
-                        "ksql": f"SELECT WINDOWSTART, WINDOWEND, AVERAGE FROM AVERAGES_1_MINUTE WHERE ID='{req_id}' AND WINDOWSTART > {start};"
-                    }
-
-                    response = requests.post(url, data = json.dumps(ksql_request)).json()
-
-                    for row in response[1:]:
-                        ans["values"].append(row['row']['columns'][2])
-                        timestamp = row['row']['columns'][1] / 1000
-                        time = datetime.datetime.fromtimestamp(timestamp).strftime("%H:%M")
-                        ans["times"].append(time)
-
-                except requests.exceptions.ConnectionError:
-                    print("Failed to connect to KSQL")
-                except TypeError:
-                    print("Response did not contain values")
-                    print(response)
-                    print(ksql_request)
-
-                socket_response["1m"] = ans
-
+                data_handler.provider.insert_value(current_sensor.id, val)
+                
                 emit(
                     "new_data",
                     socket_response,
@@ -93,6 +55,7 @@ def new_data(data):
                     broadcast=True
                 )
 
+    db.session.commit()
     db.session.remove()                                         
    
 @socketio.on('updated_targets', namespace='/sensor')
@@ -103,13 +66,8 @@ def updated_targets(data):
             sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
 
             if sensor:
-                event =  {
-                    "id": "_".join([app.config["USER"], str(device.id), str(sensor.id)]),
-                    "value": current_data['value'],
-                    "accuracy": current_data['accuracy'],
-                }
-
-                producer.produce("sensor-targets", json.dumps(event).encode('utf-8'))
+                sensor.target = current_data['value']
+                sensor.accuracy = current_data['accuracy']
 
                 emit(
                     "update_sensor", 
@@ -122,3 +80,6 @@ def updated_targets(data):
                     room='authorized',
                     namespace="/dashboard"
                 )
+    
+    db.session.commit()
+    db.session.remove()         

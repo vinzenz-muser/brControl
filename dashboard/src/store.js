@@ -38,6 +38,15 @@ export default new Vuex.Store({
         "SOCKET_update_sensors"(state, data) {
             state.devices = data
         },
+        "SOCKET_update_plot_data"(state, data) {
+            for (let plot_values in data['data']) {
+                Vue.set(state.devices[data.device_id].sensors[data.sensor_id].plot_data, plot_values, {
+                        "timestamps": data['data'][plot_values].timestamps,
+                        "values": data['data'][plot_values].values
+                    }
+                )
+            }
+        },
         "SOCKET_update_sensor"(state, data) {
             let sensor_id = data['id'];
             let device_id = data['deviceId'];

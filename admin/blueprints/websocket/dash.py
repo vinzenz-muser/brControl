@@ -3,7 +3,8 @@ from flask_login import current_user
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for, make_response)
 from admin.models import User, Sensor, Device
-from admin import app, socketio, producer
+from admin import app, socketio, data_handler
+from datetime import datetime, timedelta
 
 # Users
 @socketio.on('connect', namespace='/dashboard')
@@ -40,13 +41,67 @@ def dash_update_sensors():
             "active": False,
             "sensors": {s.id: s.to_dict() for s in sensors},
         }
-        
+
+        for _, sensor in data[device.id]["sensors"].items():
+            sensor["plot_data"] = {}
+
     emit(
         "update_sensors", 
         data, 
         room=request.sid,
         namespace="/dashboard"
     )
+
+@socketio.on('request_sensor_update', namespace='/dashboard')
+def get_sensor_data(data):
+    print(data)
+    sensor_id = data['sensor_id']
+
+    time_deltas = {
+        "1m": {
+            "delta": timedelta(minutes=60),
+            "format": "%H:%M:%S"
+        },
+        "5m": {
+            "delta": timedelta(minutes=300),
+            "format": "%H:%M:%S"
+        },
+        "1h": {
+            "delta": timedelta(hours=50),
+            "format": "%H:%M:%S"
+        },
+        "1d": {
+            "delta": timedelta(days=50),
+            "format": "%d.%m.%y"
+        },
+    }
+
+    now = datetime.utcnow()
+    ans = {
+        "device_id": data["device_id"],
+        "sensor_id": data["sensor_id"],
+        "data": {
+
+        }
+    }
+    for period in data['periods']:
+        try:
+            data = data_handler.provider.load_values(sensor_id, period, now-time_deltas[period]["delta"])
+            ans["data"][period] = {
+                "timestamps": [],
+                "values": []
+            }
+            for res in data:
+                ans["data"][period]["timestamps"].append(res[0].strftime(time_deltas[period]["format"]))
+                ans["data"][period]["values"].append(res[1])
+        except KeyError:
+            print("Time period not configured")
+        
+        emit("update_plot_data",
+            ans,
+            room=request.sid,
+            namespace="/dashboard"
+        )
 
 @socketio.on('set_targets', namespace='/dashboard')
 def dash_set_target(data):

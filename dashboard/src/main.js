@@ -48,7 +48,6 @@ Vue.filter('round', function(value) {
   },
 )
 
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

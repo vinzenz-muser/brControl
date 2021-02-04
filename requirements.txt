@@ -8,8 +8,4 @@ flask-migrate
 flask-login
 flask_socketio 
 email_validator
-pandas
-numpy
-confluent-kafka[avro,json,protobuf]>=1.4.2
-certifi
-requests
+influxdb-client

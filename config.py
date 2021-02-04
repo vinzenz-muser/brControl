@@ -8,8 +8,14 @@ class Config(object):
     DEBUG=os.environ.get('DEBUG') or False
     ENV=os.environ.get('FLASK_ENV') or "production"
     SESSION_COOKIE_SECURE=os.environ.get('FLASK_SESSION_COOKIE_SECURE') or True
-    USER="brauerei"
-    CONFLUENT_BOOSTRAP_SERVERS=os.environ.get('CONFLUENT_BOOSTRAP_SERVERS')
-    CONFLUENT_USERNAME=os.environ.get('CONFLUENT_USERNAME')
-    CONFLUENT_PASSWORD=os.environ.get('CONFLUENT_PASSWORD')
-    KSQL_URL=os.environ.get('KSQL_URL')
+    USER=os.environ.get('SENSOR_USER')
+    DATA_HANDLER=dict()
+    DATA_HANDLER["provider"] = os.environ.get('DATA_PROVIDER') or "sql"
+
+    if DATA_HANDLER["provider"] == "influx":
+        DATA_HANDLER["config"] = {
+            "token": os.environ.get('INFLUX_TOKEN'),
+            "url": os.environ.get('INFLUX_URL'),
+            "org": os.environ.get('SENSOR_USER'),
+            "bucket": os.environ.get('INFLUX_BUCKET')
+        }

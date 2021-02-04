@@ -6,7 +6,6 @@ import secrets
 import pandas as pd
 import requests
 import json
-import numpy as np
 from sqlalchemy.sql import func
 import time
 
@@ -32,6 +31,8 @@ class Sensor(db.Model):
     name = db.Column(db.String(64), nullable=False)
     suffix = db.Column(db.String(32), nullable=False, server_default="°C")
     type = db.Column(db.String(32), nullable=False, server_default="reader")
+    target = db.Column(db.Float, nullable=True)
+    accuracy = db.Column(db.Float, nullable=True)
 
     def __repr__(self):
         return f'<Sensor {self.name} from device {self.deviceId}>'
@@ -40,70 +41,6 @@ class Sensor(db.Model):
         ans = {
             key: value for key, value in self.__dict__.items() if key in self.__table__.columns.keys()
         }
-        req_id = f"{app.config['USER']}_{self.deviceId}_{self.id}"
-        now = datetime.datetime.utcnow()
-        start = 1000*int((now - datetime.timedelta(minutes=60)).timestamp())
-
-        url = app.config['KSQL_URL']+"/query"
-        request_strings = {
-            "1m": {
-                "db": "AVERAGES_1_MINUTE",
-                "start": 1000*int((now - datetime.timedelta(minutes=60)).timestamp()),
-                "format": "%H:%M"
-            },
-            "5m": {
-                "db": "AVERAGES_5_MINUTE",
-                "start": 1000*int((now - datetime.timedelta(minutes=300)).timestamp()),
-                "format": "%H:%M"
-            },
-            "1h": {
-                "db": "AVERAGES_1_HOUR",
-                "start": 1000*int((now - datetime.timedelta(hours=60)).timestamp()),
-                "format": "%H:%M %d.%m.%Y"
-            },
-            "1d": {
-                "db": "AVERAGES_1_DAY",
-                "start": 1000*int((now - datetime.timedelta(days=60)).timestamp()),
-                "format": "%d.%m.%Y"
-            },
-        }
-        plot_data = dict()
-        for interval, conf in request_strings.items():
-            plot_data[interval] = {
-                "values": [],
-                "timestamps": []
-            }
-
-            ksql_request = {
-                "ksql": f"SELECT WINDOWSTART, WINDOWEND, AVERAGE FROM {conf['db']} WHERE ID='{req_id}' AND WINDOWSTART > {conf['start']};"
-            }
-
-            response = requests.post(url, data = json.dumps(ksql_request)).json()
-            try:
-                for row in response[1:]:
-                    plot_data[interval]["values"].append(row['row']['columns'][2])
-
-                    timestamp = row['row']['columns'][1] / 1000
-                    timestring = datetime.datetime.fromtimestamp(timestamp).strftime(conf["format"])
-                    plot_data[interval]["timestamps"].append(timestring)
-            except TypeError:
-                print("No cool response")
-
-        ans["plot_data"] = plot_data
-
-        ksql_request = {
-            "ksql": f"SELECT VALUE, ACCURACY FROM TARGET_TABLE WHERE ID='{req_id}';"
-        }
-
-        response = requests.post(url, data = json.dumps(ksql_request)).json()
-
-        try:
-            current = response[1]
-            ans["target"] = current["row"]["columns"][0]
-            ans["accuracy"] = current["row"]["columns"][1]
-        except (IndexError, KeyError):
-            print("No target / accuracy")
-
         return ans
 
 class User(UserMixin, db.Model):
@@ -121,6 +58,12 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+class Value(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    value = db.Column(db.Float, nullable=False)
+    timespan = db.Column(db.String(8), nullable=False, default="point")
+    sensorId = db.Column(db.Integer, db.ForeignKey('sensor.id'), nullable=False)
 
 @login.user_loader
 def load_user(id):

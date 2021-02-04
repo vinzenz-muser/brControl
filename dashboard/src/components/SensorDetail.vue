@@ -27,10 +27,14 @@
                 <div class="text-right mb-2">
                     <base-button v-bind:disabled="period==activeData" size="sm" type="secondary" v-for="period in periods" @click="updatePlot(period)">{{ period }}</base-button>
                 </div>
-                <line-chart style="height: 100%"
+                <line-chart v-if="this.renderChart" style="height: 100%"
                     :chart-data="purpleLineChart.chartData"
                     :extra-options="purpleLineChart.extraOptions">
                 </line-chart>
+                <div v-else class="text-center mt-4 mb-4">
+                    <div class="spinner-border" role="status">
+                    </div>
+                </div>
             </div>
         </card>
         <modal :show="modalActive" body-classes="p-0">
@@ -130,7 +134,14 @@
             }
         },
         computed: {
+            renderChart: function() {
+                return this.activeData in this.sensor.plot_data
+            },
             purpleLineChart: function() {
+                if (!this.renderChart) {
+                    return {}
+                }
+
                 return {
                     extraOptions: {
                         maintainAspectRatio: false,
@@ -215,6 +226,13 @@
             updatePlot (period) {
                 this.activeData = period
             }
+        },
+        created: function () {
+            this.$socket.emit('request_sensor_update', {
+                    "device_id": this.deviceId,
+                    "sensor_id": this.sensor.id,
+                    "periods": this.periods
+                })
         }
     };
 </script>
