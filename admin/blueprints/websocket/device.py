@@ -11,30 +11,34 @@ from admin import socketio, db, app, data_handler
 @socketio.on('connect', namespace='/sensor')
 def sensor_connect():
     allowed = False
+    
     if "api_key" not in request.args:
         raise ConnectionRefusedError('Please provide an API-Key')
     api_key = request.args.get("api_key")
     device = Device.query.filter(Device.apiKey == api_key).first()
+    db.session.expunge(device)
+    db.session.remove()       
 
     if device:
         join_room("device_" + str(device.id))
-        allowed = True
-
-    db.session.remove()         
+        allowed = True  
     return allowed
 
 @socketio.on('disconnect', namespace='/sensor')
 def sensor_disconnect():
     device = Device.query.filter(Device.apiKey == request.args.get("api_key")).first()
-
+    db.session.expunge(device)
+    db.session.remove()       
+    
     if device:
         emit('device_disconnect', {"id": device.id}, namespace='/dashboard', room="authorized")
     
-    db.session.remove()
 
 @socketio.on('new_data', namespace='/sensor')
 def new_data(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
+    db.session.expunge(device)
+    db.session.remove()
 
     if device:
         for key, val in data["data"].items():
@@ -54,13 +58,13 @@ def new_data(data):
                     namespace="/dashboard",
                     broadcast=True
                 )
-
-    db.session.commit()
-    db.session.remove()                                         
    
 @socketio.on('updated_targets', namespace='/sensor')
 def updated_targets(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
+    db.session.expunge(device)
+    db.session.remove()       
+
     if device:
         for current_data in data:
             sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
@@ -80,6 +84,4 @@ def updated_targets(data):
                     room='authorized',
                     namespace="/dashboard"
                 )
-    
-    db.session.commit()
-    db.session.remove()         
+       

@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for, make_response)
 from admin.models import User, Sensor, Device
-from admin import app, socketio, data_handler
+from admin import app, socketio, data_handler, db
 from datetime import datetime, timedelta
 
 # Users
@@ -30,6 +30,8 @@ def dash_connect():
 def dash_update_sensors():
     data = {}
     devices = Device.query.all()
+    db.session.expunge(devices)
+    db.session.remove()       
 
     for device in devices:
         sensors = device.sensors.all()
@@ -54,7 +56,6 @@ def dash_update_sensors():
 
 @socketio.on('request_sensor_update', namespace='/dashboard')
 def get_sensor_data(data):
-    print(data)
     sensor_id = data['sensor_id']
 
     time_deltas = {
@@ -102,6 +103,7 @@ def get_sensor_data(data):
             room=request.sid,
             namespace="/dashboard"
         )
+    
 
 @socketio.on('set_targets', namespace='/dashboard')
 def dash_set_target(data):
