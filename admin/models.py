@@ -3,7 +3,6 @@ from admin import db, login, app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-import pandas as pd
 import requests
 import json
 from sqlalchemy.sql import func
