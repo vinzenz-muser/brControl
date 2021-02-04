@@ -9,3 +9,4 @@ flask-login
 flask_socketio 
 email_validator
 influxdb-client
+requests
