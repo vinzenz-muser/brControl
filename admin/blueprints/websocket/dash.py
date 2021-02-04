@@ -2,7 +2,7 @@ from flask_socketio import emit, join_room, leave_room
 from flask_login import current_user
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for, make_response)
-from admin.models import User, Sensor, Device
+from admin.models import Sensor, Device
 from admin import app, socketio, data_handler, db
 from datetime import datetime, timedelta
 
@@ -30,11 +30,13 @@ def dash_connect():
 def dash_update_sensors():
     data = {}
     devices = Device.query.all()
-    db.session.expunge(devices)
-    db.session.remove()       
 
     for device in devices:
         sensors = device.sensors.all()
+        db.session.expunge(devices)
+        db.session.expunge(sensors)
+        db.session.remove()
+               
         data[device.id] = {
             "id": device.id,
             "type": device.type,
