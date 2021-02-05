@@ -30,10 +30,11 @@ def dash_connect():
 def dash_update_sensors():
     data = {}
     devices = Device.query.all()
+    for device in devices:
+        db.session.expunge(device)
 
     for device in devices:
         sensors = device.sensors.all()
-        db.session.expunge(devices)
         db.session.expunge(sensors)
         db.session.remove()
                
