@@ -38,11 +38,13 @@ def sensor_disconnect():
 def new_data(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
     db.session.expunge(device)
-    db.session.remove()
 
     if device:
         for key, val in data["data"].items():
             current_sensor = Sensor.query.filter(Sensor.id == key).filter(Sensor.deviceId == device.id).first()
+            db.session.expunge(current_sensor)
+            db.session.remove()
+
             if current_sensor:
                 socket_response = {
                     "device_id": device.id,
@@ -63,11 +65,12 @@ def new_data(data):
 def updated_targets(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
     db.session.expunge(device)
-    db.session.remove()       
-
+  
     if device:
         for current_data in data:
             sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
+            db.session.expunge(sensor)
+            db.session.remove()       
 
             if sensor:
                 sensor.target = current_data['value']
