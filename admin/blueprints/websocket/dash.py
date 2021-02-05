@@ -35,7 +35,8 @@ def dash_update_sensors():
 
     for device in devices:
         sensors = device.sensors.all()
-        db.session.expunge(sensors)
+        for sensor in sensors:
+            db.session.expunge(sensor)
         db.session.remove()
                
         data[device.id] = {
