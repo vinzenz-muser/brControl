@@ -11,6 +11,7 @@ from admin import socketio, db, app, data_handler
 # Sensors 
 @socketio.on('connect', namespace='/sensor')
 def sensor_connect():
+    print("Device Connected")
     allowed = False
     
     if "api_key" not in request.args:
@@ -74,7 +75,7 @@ def updated_targets(data):
             if sensor:
                 sensor.target = current_data['value']
                 sensor.accuracy = current_data['accuracy']
-
+                db.session.commit()
                 emit(
                     "update_sensor", 
                     {

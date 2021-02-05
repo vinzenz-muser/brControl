@@ -1,6 +1,5 @@
 flask
 blinker
-waitress
 PyMySQL
 flask-sqlalchemy
 flask-wtf
@@ -10,3 +9,5 @@ flask_socketio
 email_validator
 influxdb-client
 requests
+eventlet
+gunicorn
