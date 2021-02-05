@@ -7,6 +7,7 @@ import datetime
 import json
 from admin import socketio, db, app, data_handler
 
+
 # Sensors 
 @socketio.on('connect', namespace='/sensor')
 def sensor_connect():
@@ -23,6 +24,7 @@ def sensor_connect():
         join_room("device_" + str(device.id))
         allowed = True  
     return allowed
+
 
 @socketio.on('disconnect', namespace='/sensor')
 def sensor_disconnect():
@@ -60,15 +62,16 @@ def new_data(data):
                     namespace="/dashboard",
                     broadcast=True
                 )
-   
+
+
 @socketio.on('updated_targets', namespace='/sensor')
 def updated_targets(data):
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
-    db.session.expunge(device)
   
     if device:
         for current_data in data:
             sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
+            db.session.expunge(device)
             db.session.expunge(sensor)
             db.session.remove()       
 
