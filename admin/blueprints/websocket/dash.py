@@ -31,14 +31,8 @@ def dash_update_sensors():
     data = {}
     devices = Device.query.all()
     for device in devices:
-        db.session.expunge(device)
-
-    for device in devices:
         sensors = device.sensors.all()
-        for sensor in sensors:
-            db.session.expunge(sensor)
-        db.session.remove()
-               
+
         data[device.id] = {
             "id": device.id,
             "type": device.type,
@@ -47,16 +41,18 @@ def dash_update_sensors():
             "active": False,
             "sensors": {s.id: s.to_dict() for s in sensors},
         }
-
+        sensors = device.sensors.all()
         for _, sensor in data[device.id]["sensors"].items():
             sensor["plot_data"] = {}
-
+        
     emit(
         "update_sensors", 
         data, 
         room=request.sid,
         namespace="/dashboard"
     )
+
+    db.session.remove()
 
 @socketio.on('request_sensor_update', namespace='/dashboard')
 def get_sensor_data(data):
