@@ -38,6 +38,7 @@ def sensor_disconnect():
 
 @socketio.on('new_data', namespace='/sensor')
 def new_data(data):
+    print(data)
     device = Device.query.filter(Device.apiKey == request.args["api_key"]).first()
     db.session.expunge(device)
 
@@ -71,9 +72,6 @@ def updated_targets(data):
     if device:
         for current_data in data:
             sensor = device.sensors.filter(Sensor.id == current_data['sensor_id']).first()
-            db.session.expunge(device)
-            db.session.expunge(sensor)
-            db.session.remove()       
 
             if sensor:
                 sensor.target = current_data['value']
@@ -90,4 +88,5 @@ def updated_targets(data):
                     room='authorized',
                     namespace="/dashboard"
                 )
-       
+
+    db.session.remove()
