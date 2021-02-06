@@ -16,6 +16,11 @@ class Config(object):
         DATA_HANDLER["config"] = {
             "token": os.environ.get('INFLUX_TOKEN'),
             "url": os.environ.get('INFLUX_URL'),
-            "org": os.environ.get('SENSOR_USER'),
-            "bucket": os.environ.get('INFLUX_BUCKET')
+            "org": "brauradau",
+            "buckets": {
+                "rt": os.environ.get('SENSOR_USER')+"_rt",
+                "1m": os.environ.get('SENSOR_USER')+"_1m",
+                "5m": os.environ.get('SENSOR_USER')+"_5m"
+            },
+            "base": os.environ.get('SENSOR_USER')
         }
