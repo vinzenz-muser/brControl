@@ -43,7 +43,7 @@ def new_data(data):
     if device:
         for key, val in data["data"].items():
             current_sensor = Sensor.query.filter(Sensor.id == key).filter(Sensor.deviceId == device.id).first()
-
+            print(data)
             if current_sensor:
                 socket_response = {
                     "device_id": device.id,
