@@ -20,7 +20,9 @@ class Config(object):
             "buckets": {
                 "rt": os.environ.get('SENSOR_USER')+"_rt",
                 "1m": os.environ.get('SENSOR_USER')+"_1m",
-                "5m": os.environ.get('SENSOR_USER')+"_5m"
+                "5m": os.environ.get('SENSOR_USER')+"_5m",
+                "1h": os.environ.get('SENSOR_USER')+"_1h",
+                "1d": os.environ.get('SENSOR_USER')+"_1d",
             },
             "base": os.environ.get('SENSOR_USER')
         }
