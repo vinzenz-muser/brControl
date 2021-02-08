@@ -5,51 +5,61 @@
     <title>Flask-SocketIO Test</title>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/3.1.1/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-            // Connect to the Socket.IO server.
-            // api_key: aJ2dKojAVOEoTbS-2rQW2wT-RrAqrJ4dXL_fE0gaJeU
-            // hub_url:  https://hub-brauerei.brauradau.ch
-            // The connection URL has the following format, relative to the current page:
-            //     http[s]://<domain>:<port>[/<namespace>]
-            //var socket = io("https://hub-brauerei.brauradau.ch/sensor?api_key=uQLm9kttaOR4XDDUTQasq1BV4kPcSuBMwsWd1eMIob4");
-            let url = window.location.protocol + '//' + window.location.host + '/sensor'
+            $("#connect").on("click", function() {
+                let url_field = $("#url");
+                let api_field = $("#api");
+                let sensors_field = $("#sensors");
+                let url = url_field.val();
+                let api_key = api_field.val();
+                let sensors_string = sensors_field.val();
+                let sensors = sensors_string.split(" ");
 
-            let socket = io(url, {
-                    query: {
-                        api_key: "aJ2dKojAVOEoTbS-2rQW2wT-RrAqrJ4dXL_fE0gaJeU"
+                let socket = io(url, {
+                        query: {
+                            api_key: api_key
+                        },
+                        cors: {
+                            origin: "*",
+                            methods: ["GET", "POST"]
+                        }
                     }
-                }
-            );
+                );
 
-            // Event handler for new connections.
-            // The callback function is invoked when a connection with the
-            // server is established.
-            socket.on('connect', function() {
-                console.log("connected")
-            });
+                socket.on('connect', function() {
+                    console.log("connected")
+                });
 
-            let i = 0;
-            window.setInterval(function() {
-                let data = {
-                    "data": {
-                        5: 100*Math.random(),
-                        1: 100*Math.random(),
-                        17: 100*Math.random(),
+                window.setInterval(function() {
+                    data = {data: {}}
+                    for (let i in sensors) {
+                        id = sensors[i]
+                        value = 100*Math.random()
+                        data["data"][id] = value
                     }
-                }
-                i = i + 1;
-                console.log(data)
-                socket.emit('new_data', data);
-            }, 1000);
+                    console.log(data)
+                    socket.emit('new_data', data);
+                }, 1000);
+            })
+            function StartConn() {
 
-            // Handlers for the different forms in the page.
-            // These accept data from the user and send it to the server in a
-            // variety of way
+                let i = 0;
+
+            };
+
         });
     </script>
 </head>
 <body>
     <h1>Flask-SocketIO Test</h1>
+  <label for="url">URL:</label><br>
+  <input type="text" id="url" name="url" value="https://brauerei.brauradau.ch/sensor"><br><br>
+  <label for="api">API-Key:</label><br><br>
+  <input type="text" id="api" name="api"><br><br>
+  <label for="sensors">Sensor-IDs (space separated):</label><br>
+  <input type="text" id="sensors" name="sensors"><br><br>
+  <input id="connect" type="submit" value="Submit">
 </body>
 </html>
