@@ -6,11 +6,10 @@
         <template slot="header">
           <div class="row">
             <div class="col-sm-6">
-              <h3 class="card-title"> {{ device.device }} </h3>
+                <router-link :to="{ name: 'controlDeviceDetail', params: { id: device.id }}"><h3 class="card-title"> {{ device.device }} </h3></router-link>
               <h5 class="card-subtitle mb-2 text-muted">Location: {{ device.location }}</h5>
               <h5 class="card-subtitle mb-2 text-muted">Sensor: {{ device.sensors[device.activeSensor].name }}</h5>
               <h5 v-if="device.sensors[device.activeSensor].lastValue" class="card-subtitle mb-2 text-muted">Time: {{ device.sensors[device.activeSensor].lastTime }}</h5>
-              
             </div>
             <div class="col-sm-6 d-flex d-sm-block">
               <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
