@@ -33,7 +33,7 @@
                   </div>
                 </div>
                 <div class="card-body text-center" v-if="device.active">
-                  <h1 v-if="device.sensors[activeSensor].lastValue" class="title">{{ device.sensors[activeSensor].lastValue | round }}°C</h1>
+                  <h1 v-if="device.sensors[activeSensor].lastValue" class="title">{{ device.sensors[activeSensor].lastValue | round }} {{ device.sensors[activeSensor].suffix }} </h1>
                   <h1 v-else class="title">No value</h1>
                 </div>
               </div>

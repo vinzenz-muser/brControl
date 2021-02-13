@@ -43,10 +43,10 @@
                     <ValidationObserver v-slot="{ handleSubmit }">
                         <form class="form-horizontal" @submit.prevent="handleSubmit(onSubmit)">
                             <span slot="header">
-                                Change temperatures of
+                                Change values of
                             </span>
                             <h2 class="card-title mb-4">{{ sensor.name }}</h2>
-                            <h4 class="card-title">Target temperature:</h4>
+                            <h4 class="card-title">Target:</h4>
 
                             <ValidationProvider 
                                 name="Temperature" 
@@ -60,8 +60,7 @@
                                     >
                                     <small slot="helperText" id="emailHelp" class="form-text text-muted">Choose the
                                         target
-                                        temperature between
-                                        0 and 100 degrees.</small>
+                                        value.</small>
                                 </base-input>
 
                             </ValidationProvider>
@@ -70,7 +69,7 @@
 
                             <ValidationProvider 
                                 name="Accuracy" 
-                                rules="required|min_value:0.5|max_value:10"
+                                rules="required|min_value:0.1|max_value:10"
                                 v-slot="{ passed, failed, errors }">
 
                                 <base-input 
@@ -81,7 +80,7 @@
                                     <small slot="helperText" id="emailHelp" class="form-text text-muted">Choose the
                                         target
                                         accuracy between 0.1
-                                        and 10 degrees.</small>
+                                        and 10.</small>
                                 </base-input>
 
                             </ValidationProvider>
@@ -162,13 +161,13 @@
                         scales: {
                             yAxes: [
                                 {
-                                    gridLines: {
-                                    drawBorder: false,
-                                    zeroLineColor: 'transparent'
-                                    },
                                     ticks: {
                                         padding: 5,
-                                    }
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: this.sensor.suffix
+                                    },
                                 }
                             ],
                             xAxes: [
@@ -190,7 +189,7 @@
                         datasets: [
                             {
                                 spanGaps: true,                        
-                                fill: true,
+                                fill: false,
                                 borderColor: '#d048b6',
                                 borderWidth: 2,
                                 borderDash: [],
@@ -198,10 +197,10 @@
                                 pointBackgroundColor: '#d048b6',
                                 pointBorderColor: 'rgba(255,255,255,0)',
                                 pointHoverBackgroundColor: '#d048b6',
-                                pointBorderWidth: 20,
+                                pointBorderWidth: 0,
                                 pointHoverRadius: 4,
                                 pointHoverBorderWidth: 15,
-                                pointRadius: 4,
+                                pointRadius: 0,
                                 data: this.sensor.plot_data[this.activeData].values,
                             }
                         ]

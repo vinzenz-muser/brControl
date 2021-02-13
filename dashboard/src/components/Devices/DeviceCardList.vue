@@ -27,7 +27,6 @@
         name: "device-card-list",
         props: ["device"],
         data () {
-            console.log(this.device)
             return {
                 activeSensor: parseInt(Object.keys(this.device["sensors"])[0])
             }
