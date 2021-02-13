@@ -2,48 +2,14 @@
   <div>
     <div class="row">
       <div class="col-lg-6" v-for="(device, deviceIndex) in activeDevices" :key="deviceIndex">
-        <card>
-        <template slot="header">
-          <div class="row">
-            <div class="col-sm-6">
-              <h3 class="card-title"> {{ device.device }} </h3>
-              <h5 class="card-subtitle mb-2 text-muted">Location: {{ device.location }}</h5>
-              <h5 class="card-subtitle mb-2 text-muted">Sensor: {{ device.sensors[device.activeSensor].name }}</h5>
-              <h5 v-if="device.sensors[device.activeSensor].lastValue" class="card-subtitle mb-2 text-muted">Time: {{ device.sensors[device.activeSensor].lastTime }}</h5>
-              
-            </div>
-            <div class="col-sm-6 d-flex d-sm-block">
-              <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                <label
-                  v-for="(sensor, sensorIndex, i) in device.sensors"
-                  :key="sensor.name"
-                  class="btn btn-sm btn-primary btn-simple"
-                  :class="{ active: device.activeSensor === sensor.id }"
-                >
-                    <input
-                      type="radio"
-                      @click="activateSensor(deviceIndex, sensor.id)"
-                      name="options"
-                      autocomplete="off"
-                      :checked="device.activeSensor === sensor.id"
-                    />
-                    <span class="d-none d-sm-block">{{ i + 1 | roman }}</span>
-                </label>
-              </div>
-            </div>
-            <div class="card-body text-center">
-              <h1 v-if="device.sensors[device.activeSensor].lastValue" class="title">{{ device.sensors[device.activeSensor].lastValue | round }}°C</h1>
-              <h1 v-else class="title">No value</h1>
-            </div>
-          </div>
-        </template>
-        </card>
+        <device-card v-bind:device="device"></device-card>
       </div>
     </div>
   </div>
 </template>
 <script>
   import Vue from "vue"
+  import { DeviceCard } from '@/components';
   export default {
     computed: {
       devices () {
@@ -62,6 +28,9 @@
 
         return ans
       }
+    },
+    components: {
+      DeviceCard
     },
     methods: {
       activateSensor(deviceId, sensorId) {

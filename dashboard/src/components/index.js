@@ -33,14 +33,12 @@ import SimpleWizard from './Wizard/Wizard.vue';
 import WizardTab from './Wizard/WizardTab.vue';
 import LoadingPanel from './LoadingPanel.vue';
 import AsyncWorldMap from './WorldMap/AsyncWorldMap.vue';
-
 import BasePagination from './BasePagination.vue';
-
 import SidebarPlugin from './SidebarPlugin';
-
 import AnimatedNumber from './AnimatedNumber';
-
-import SensorDetail from './SensorDetail';
+import SensorDetail from './Sensors/SensorDetail';
+import DeviceCard from './Devices/DeviceCard';
+import DeviceCardList from './Devices/DeviceCardList';
 
 
 export {
@@ -79,5 +77,7 @@ export {
   CollapseItem,
   LoadingPanel,
   AsyncWorldMap,
-  SensorDetail
+  SensorDetail,
+  DeviceCard,
+  DeviceCardList
 };

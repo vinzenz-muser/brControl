@@ -32,12 +32,12 @@ def dash_update_sensors():
     devices = Device.query.all()
     for device in devices:
         sensors = device.sensors.all()
-
         data[device.id] = {
             "id": device.id,
             "type": device.type,
             "device": device.name,
             "location": device.location,
+            "api": device.apiKey,
             "active": False,
             "sensors": {s.id: s.to_dict() for s in sensors},
         }
