@@ -11,3 +11,4 @@ influxdb-client
 requests
 eventlet
 gunicorn
+cryptography
