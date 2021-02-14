@@ -13,8 +13,8 @@ class Provider(ProviderInterface):
 
         self.org = config["org"]
         self.buckets = config["buckets"]
-        self.base = config["base"]
         self.token = config["token"]
+        self.user = config["user"]
         self._write_api = self._client.write_api(write_options=SYNCHRONOUS)
         self._query_api = self._client.query_api()
     
@@ -45,5 +45,5 @@ class Provider(ProviderInterface):
         
 
     def insert_value(self, sensorId: int, value: float, time: datetime=None, timespan="spot"):
-        p = influxdb_client.Point("sensor_data_point").tag("sensor", sensorId).field("value", value)
+        p = influxdb_client.Point("sensor_data_point").tag("sensor", sensorId).tag("user", self.user).field("value", value)
         self._write_api.write(bucket=self.buckets["rt"], org=self.org, record=p)

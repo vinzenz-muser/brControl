@@ -18,11 +18,11 @@ class Config(object):
             "url": os.environ.get('INFLUX_URL'),
             "org": "brauradau",
             "buckets": {
-                "rt": os.environ.get('SENSOR_USER')+"_rt",
-                "1m": os.environ.get('SENSOR_USER')+"_1m",
-                "5m": os.environ.get('SENSOR_USER')+"_5m",
-                "1h": os.environ.get('SENSOR_USER')+"_1h",
-                "1d": os.environ.get('SENSOR_USER')+"_1d",
+                "rt": "data_rt",
+                "1m": "data_1m",
+                "5m": "data_5m",
+                "1h": "data_1h",
+                "1d": "data_1d"
             },
-            "base": os.environ.get('SENSOR_USER')
+            "user": os.environ.get('SENSOR_USER'),
         }

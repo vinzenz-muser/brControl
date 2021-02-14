@@ -13,7 +13,7 @@
                         <div class="col-lg-3">
                             <div class="mt-1">
                                 <badge v-if="device.active" class="float-right" type="success">Online</badge>
-                                <badge v-else="device.active" class="float-right" type="info">Offline</badge>
+                                <badge v-else class="float-right" type="info">Offline</badge>
                             </div>
                         </div>
                     </div>
