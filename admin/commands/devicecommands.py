@@ -14,7 +14,8 @@ def create_user(name, location):
 
     db.session.add(add_device)
     db.session.commit()
-    return 
+    return
+
 
 @app.cli.command("create-sensor")
 @click.argument("name")
@@ -23,4 +24,4 @@ def create_sensor(name, deviceid):
     add_sensor = Sensor(name=name, deviceId=deviceid)
     db.session.add(add_sensor)
     db.session.commit()
-    return 
+    return
