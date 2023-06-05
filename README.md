@@ -24,8 +24,8 @@ Once the dashboard is built, you can run the webserver.
 > **Note**
 > These steps are the necessary steps for a minimal setup. It will use `sqlite` as database and will also use this database to store any values received by sensors. `SQL` is not the optimal choice for time-series and alternatively it is also possible to use https://www.influxdata.com/ to store time series values. If you want to use Influx, adapt the `provider` in `DATA_HANDLER` of the config in `config.py` accordingly.
 
-**Warning**
-Additionally to the database choice, the default config is not designed for production! If you want to use the control suite in a productive environment it is crucial to adapt `config.py` accordingly!
+> **Warning**
+> Additionally to the database choice, the default config is not designed for production! If you want to use the control suite in a productive environment it is crucial to adapt `config.py` accordingly!
 
 ## Usage
 
