@@ -3,6 +3,7 @@ from admin import db
 from admin.models import User
 import click
 
+
 @app.cli.command("create-user")
 @click.argument("name")
 @click.argument("password")
