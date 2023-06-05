@@ -39,6 +39,7 @@ class Provider(ProviderInterface):
             else:
                 ans = []
         except influxdb_client.rest.ApiException as e:
+            print("Error!")
             print(query, e)
             ans = []
         return ans

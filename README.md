@@ -1,11 +1,10 @@
-# brauradau-dashboard
-
-There are several parts of the control suite. To start a local version of it, first you have to build the dashboard, which is based on https://www.creative-tim.com/product/vue-black-dashboard-pro.
+# brDashboard
+brDashboard is a temperature monitoring and controlling application that supports real-time data monotioring.
 
 ## Installation
 ### Dashboard
-
-To build the dashboard, run `npm run build` in the `dashboard` folder. This creates the frontend-app in a folder `npm run app`. Notice that you can also run `npm run dev` if you want to further work on the dashboard-frontend.
+To start a local version of brDashboard, you have to build the dashboard first, which is based on https://www.creative-tim.com/product/vue-black-dashboard-pro.
+To build the dashboard, run `npm run build` in the `dashboard` folder. This creates the frontend-app in the folder `dashboard/dist`. Notice that you can also run `npm run dev` if you want to further work on the dashboard-frontend.
 
 **Note**
 The dashboard is currently only tested on Node 14. Please make sure that you run the correct version with `node --version` and if not use `nvm` to install node 14 (or install node 14 dierctly).
@@ -22,8 +21,8 @@ Once the dashboard is built, you can run the webserver.
 6. Start server: `flask run`
 7. Go to `http://localhost:5000/` in your browser and login with the username.
 
-**Note**
-These steps are the necessary steps for a minimal setup. It will use `sqlite` as database and will also use this database to store any values received by sensors. `SQL` is not the optimal choice for time-series and alternatively it is also possible to use https://www.influxdata.com/ to store time series values. If you want to use Influx, adapt the `provider` in `DATA_HANDLER` of the config in `config.py` accordingly.
+> **Note**
+> These steps are the necessary steps for a minimal setup. It will use `sqlite` as database and will also use this database to store any values received by sensors. `SQL` is not the optimal choice for time-series and alternatively it is also possible to use https://www.influxdata.com/ to store time series values. If you want to use Influx, adapt the `provider` in `DATA_HANDLER` of the config in `config.py` accordingly.
 
 **Warning**
 Additionally to the database choice, the default config is not designed for production! If you want to use the control suite in a productive environment it is crucial to adapt `config.py` accordingly!

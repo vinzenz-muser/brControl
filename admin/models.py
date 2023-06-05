@@ -1,13 +1,8 @@
 import datetime
-from admin import db, login, app
+from admin import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-import requests
-import json
-from sqlalchemy.sql import func
-import time
-
 
 class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
