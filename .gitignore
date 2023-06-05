@@ -4,7 +4,6 @@
 dist
 .editorconfig
 node_modules
-*/static/dash
 *.pyc
 *.sql
 
