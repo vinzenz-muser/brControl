@@ -17,7 +17,7 @@ app.config.from_object(Config)
 socketio = SocketIO(app, cors_allowed_origins="*", cookie=False)
 
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 
 login = LoginManager(app)
 login.session_protection = "strong"

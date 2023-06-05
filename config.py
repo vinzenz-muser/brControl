@@ -11,6 +11,7 @@ class Config(object):
     USER=os.environ.get('SENSOR_USER')
     DATA_HANDLER=dict()
     DATA_HANDLER["provider"] = os.environ.get('DATA_PROVIDER') or "sql"
+    DATA_HANDLER["config"] = {}
 
     if DATA_HANDLER["provider"] == "influx":
         DATA_HANDLER["config"] = {

@@ -12,3 +12,6 @@ node_modules
 .vscode
 !.keep
 env
+
+venv
+instance
