@@ -1,3 +1,6 @@
+> **Warning**
+> Allthough this project is running stable it needs further work before it can be used in a productive environment.
+
 # brDashboard
 brDashboard is a temperature monitoring and controlling application that supports real-time data monotioring.
 
