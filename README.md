@@ -30,6 +30,15 @@ Once the dashboard is built, you can run the webserver.
 > **Warning**
 > Additionally to the database choice, the default config is not designed for production! If you want to use the control suite in a productive environment it is crucial to adapt `config.py` accordingly!
 
+## Docker
+
+Alternatively, you can set up the application with docker. Simply run `docker build -t tempmonitor .` and then `docker run -p 8080:8080 tempmonitor`. You should be able to access the app under `http://localhost:8080`. By default, a user with the credentials `test` and pw `123456` is added.
+
+> **Warning**
+> The Docker Image is not production ready! It is crucial to change the default user in `entrypoint.sh` and once the app is running to add another user and delete the default user.
+> Furthermore, there is no file persistency, so any data will be lost once the docker container stops running. To implement that, you have to map a volume to the container or use an external DB and adapt the SQLAlchemy string accordingly.
+
+
 ## Usage
 
 When the server is running you can add a new device in the Admin-Panel under Devices. Once you've added a device, you can add Sensors to it. A Sensor can either be a simple "Read"-Sensor which only returns measured values or a "Controller", which also allows regulating the values. 
