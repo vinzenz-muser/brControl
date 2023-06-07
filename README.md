@@ -45,5 +45,5 @@ When the server is running you can add a new device in the Admin-Panel under Dev
 
 In the "Control"-Panel, you can see and regulate the received values of the devices and sensors. In order to switch between the "Control" and the "Admin" panel, you can click on the human icon in the top right corner.
 
-The specifications for the implementation of new sensors are given in this repo: https://github.com/vinzenz-muser/brDeviceSensor.
+The specifications for the implementation of new sensors are given in this repo: https://github.com/vinzenz-muser/brDeviceSensor. Alternatively, you can navigate to `/static/mock.html` where an example device is implemented. You need to fill in the API-Key, the sensor ids and the url if necessary. Once you submit, random values will be sent to the server.
 
