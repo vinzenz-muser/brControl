@@ -41,7 +41,7 @@ Alternatively, you can set up the application with docker. Simply run `docker bu
 
 ## Usage
 
-When the server is running you can add a new device in the Admin-Panel under Devices. Once you've added a device, you can add Sensors to it. A Sensor can either be a simple "Read"-Sensor which only returns measured values or a "Controller", which also allows regulating the values. 
+When the server is running you can add a new device in the Admin-Panel under Devices. Once you've added a device, you can add Sensors to it. A Sensor can either be a simple "Read"-sensor which only returns measured values or a "Controller", which also allows regulating the values. 
 
 In the "Control"-Panel, you can see and regulate the received values of the devices and sensors. In order to switch between the "Control" and the "Admin" panel, you can click on the human icon in the top right corner.
 
