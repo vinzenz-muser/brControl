@@ -6,7 +6,7 @@ brDashboard is a temperature monitoring and controlling application that support
 
 ## Installation
 ### Dashboard
-To start a local version of brDashboard, you have to build the dashboard first, which is based on https://www.creative-tim.com/product/vue-black-dashboard-pro.
+To start a local version of brControl, you have to build the dashboard first, which is based on https://www.creative-tim.com/product/vue-black-dashboard-pro. The dashboard will show all real-live data of the sensors and will also allow you to set target values.
 To build the dashboard, run `npm run build` in the `dashboard` folder. This creates the frontend-app in the folder `dashboard/dist`. Notice that you can also run `npm run dev` if you want to further work on the dashboard-frontend.
 
 **Note**
